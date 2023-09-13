@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">NewsApp-MVVM-Architecture</string>
+    <string name="top">Top Headlines</string>
+    <string name="sources">News Sources</string>
+    <string name="countries">Countries</string>
+    <string name="lang">Languages</string>
+    <string name="search">Search News</string>
+
 </resources>
