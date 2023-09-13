@@ -3,7 +3,7 @@ package com.gunishjain.newsapp.di.module
 import android.content.Context
 import com.gunishjain.newsapp.NewsApplication
 import com.gunishjain.newsapp.data.api.NetworkService
-import com.gunishjain.newsapp.data.repository.TopHeadlinesRepository
+import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.di.ApplicationContext
 import com.gunishjain.newsapp.di.BaseUrl
 import com.gunishjain.newsapp.utils.AppConstant
@@ -47,8 +47,8 @@ class ApplicationModule(private val application: NewsApplication) {
 
     @Provides
     @Singleton
-    fun provideRepository(networkService: NetworkService) : TopHeadlinesRepository {
-        return TopHeadlinesRepository(networkService)
+    fun provideRepository(networkService: NetworkService) : NewsRepository {
+        return NewsRepository(networkService)
     }
 
 }

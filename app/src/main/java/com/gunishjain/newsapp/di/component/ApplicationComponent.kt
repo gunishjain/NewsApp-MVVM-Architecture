@@ -3,7 +3,7 @@ package com.gunishjain.newsapp.di.component
 import android.content.Context
 import com.gunishjain.newsapp.NewsApplication
 import com.gunishjain.newsapp.data.api.NetworkService
-import com.gunishjain.newsapp.data.repository.TopHeadlinesRepository
+import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.di.ApplicationContext
 import com.gunishjain.newsapp.di.module.ApplicationModule
 import dagger.Component
@@ -21,8 +21,7 @@ interface ApplicationComponent {
 
     fun getNetworkService() : NetworkService
 
-
-    fun getTopHeadlinesRepository() : TopHeadlinesRepository
+    fun getNewsRepository() : NewsRepository
 
 
 }
