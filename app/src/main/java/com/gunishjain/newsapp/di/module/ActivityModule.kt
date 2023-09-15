@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.gunishjain.newsapp.data.model.Country
 import com.gunishjain.newsapp.data.model.Language
+import com.gunishjain.newsapp.data.model.Source
 import com.gunishjain.newsapp.data.repository.NewsLocalRepository
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.di.ActivityContext
 import com.gunishjain.newsapp.ui.base.ViewModelProviderFactory
+import com.gunishjain.newsapp.ui.newslist.NewsListViewModel
 import com.gunishjain.newsapp.ui.selections.SelectionsViewModel
 import com.gunishjain.newsapp.ui.sources.NewsSourceAdapter
 import com.gunishjain.newsapp.ui.sources.NewsSourceViewModel
@@ -42,6 +44,14 @@ class ActivityModule(private val activity: AppCompatActivity) {
             ViewModelProviderFactory(NewsSourceViewModel::class) {
                 NewsSourceViewModel(newsRepository)
             })[NewsSourceViewModel::class.java]
+    }
+
+    @Provides
+    fun provideNewsListViewModel(newsRepository: NewsRepository) : NewsListViewModel {
+        return ViewModelProvider(activity,
+            ViewModelProviderFactory(NewsListViewModel::class) {
+                NewsListViewModel(newsRepository)
+            })[NewsListViewModel::class.java]
     }
 
     @Provides

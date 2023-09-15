@@ -20,6 +20,16 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
 
     }
 
+    fun getNewsEverything(source : String) : Flow<List<Article>> {
+
+        return flow {
+            emit(networkService.getNewsEverything(source))
+        }.map {
+            it.articles
+        }
+
+    }
+
     fun getNewsSources() : Flow<List<Source>> {
         return flow {
             emit(networkService.getNewsSources())

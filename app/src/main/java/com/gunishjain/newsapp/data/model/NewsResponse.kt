@@ -1,6 +1,6 @@
 package com.gunishjain.newsapp.data.model
 
-data class TopHeadlinesResponse(
+data class NewsResponse(
 
     val status: String = "",
     val totalResults : Int=0,
