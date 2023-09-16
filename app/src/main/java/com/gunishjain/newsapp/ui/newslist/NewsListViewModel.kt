@@ -15,9 +15,31 @@ class NewsListViewModel(private val newsRepository: NewsRepository) : ViewModel(
     private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
     val uiState : StateFlow<UiState<List<Article>>> = _uiState
 
-     fun fetchNewsOnSrc(source: String){
+     fun fetchNewsOnSrc(sourceId: String){
         viewModelScope.launch {
-            newsRepository.getNewsEverything(source)
+            newsRepository.getNewsEverything(sourceId)
+                .catch {e->
+                    _uiState.value=UiState.Error(e.toString())
+                }.collect {
+                    _uiState.value= UiState.Success(it)
+                }
+        }
+    }
+
+    fun fetchNewsOnCountry(countryId: String){
+        viewModelScope.launch {
+            newsRepository.getNewsCountry(countryId)
+                .catch {e->
+                    _uiState.value=UiState.Error(e.toString())
+                }.collect {
+                    _uiState.value= UiState.Success(it)
+                }
+        }
+    }
+
+    fun fetchNewsOnLanguage(languageId: String){
+        viewModelScope.launch {
+            newsRepository.getNewsLanguage(languageId)
                 .catch {e->
                     _uiState.value=UiState.Error(e.toString())
                 }.collect {

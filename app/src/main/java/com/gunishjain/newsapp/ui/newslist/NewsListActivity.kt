@@ -36,8 +36,16 @@ class NewsListActivity : AppCompatActivity() {
         setContentView(binding.root)
         val intent = intent
         val sourceId = intent.getStringExtra("sourceId")
+        val countryId = intent.getStringExtra("countryId")
+        val languageId = intent.getStringExtra("languageId")
         if (sourceId != null) {
             newsListViewModel.fetchNewsOnSrc(sourceId)
+        };
+        if (countryId != null) {
+            newsListViewModel.fetchNewsOnCountry(countryId)
+        };
+        if (languageId != null) {
+            newsListViewModel.fetchNewsOnLanguage(languageId)
         };
         setupUI()
         setupObserver()

@@ -1,5 +1,6 @@
 package com.gunishjain.newsapp.ui.selections
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.gunishjain.newsapp.databinding.SourceItemLayoutBinding
 import com.gunishjain.newsapp.di.component.DaggerActivityComponent
 import com.gunishjain.newsapp.di.module.ActivityModule
 import com.gunishjain.newsapp.ui.base.UiState
+import com.gunishjain.newsapp.ui.newslist.NewsListActivity
 import com.gunishjain.newsapp.utils.genericrecyclerview.BaseAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -49,10 +51,11 @@ class CountrySelectionActivity : AppCompatActivity() {
             view.tvSrc.text = eachItem.countryName
 
             view.root.setOnClickListener {
-                Toast.makeText(
-                    this@CountrySelectionActivity,
-                    "Clicked on ${eachItem.countryId}",
-                    Toast.LENGTH_SHORT).show()
+
+                val intent = Intent(view.root.context, NewsListActivity::class.java)
+                intent.putExtra("countryId", eachItem.countryId)
+                startActivity(intent)
+
             }
 
         }

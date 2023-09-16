@@ -20,10 +20,10 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
 
     }
 
-    fun getNewsEverything(source : String) : Flow<List<Article>> {
+    fun getNewsEverything(sourceId : String) : Flow<List<Article>> {
 
         return flow {
-            emit(networkService.getNewsEverything(source))
+            emit(networkService.getNewsEverything(sourceId))
         }.map {
             it.articles
         }
@@ -35,6 +35,22 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
             emit(networkService.getNewsSources())
         }.map {
             it.sources
+        }
+    }
+
+    fun getNewsCountry(countryId: String) : Flow<List<Article>> {
+        return flow {
+            emit(networkService.getNewsCountry(countryId))
+        }.map {
+            it.articles
+        }
+    }
+
+    fun getNewsLanguage(languageId: String) : Flow<List<Article>> {
+        return flow {
+            emit(networkService.getNewsLanguage(languageId))
+        }.map {
+            it.articles
         }
     }
 }
