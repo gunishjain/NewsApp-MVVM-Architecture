@@ -51,11 +51,7 @@ class CountrySelectionActivity : AppCompatActivity() {
             view.tvSrc.text = eachItem.countryName
 
             view.root.setOnClickListener {
-
-                val intent = Intent(view.root.context, NewsListActivity::class.java)
-                intent.putExtra("countryId", eachItem.countryId)
-                startActivity(intent)
-
+                startActivity(NewsListActivity.getStartIntent(this, country = eachItem.countryId))
             }
 
         }

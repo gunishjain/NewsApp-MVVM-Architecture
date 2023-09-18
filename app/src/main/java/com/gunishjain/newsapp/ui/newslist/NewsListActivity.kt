@@ -1,5 +1,7 @@
 package com.gunishjain.newsapp.ui.newslist
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -21,6 +23,23 @@ import javax.inject.Inject
 
 class NewsListActivity : AppCompatActivity() {
 
+    companion object {
+        const val COUNTRY = "COUNTRY"
+        const val SOURCE = "SOURCE"
+        const val LANGUAGE = "LANGUAGE"
+
+        fun getStartIntent(context: Context, country: String? = null, language: String? = null, source: String? = null): Intent {
+            return Intent(context, NewsListActivity::class.java)
+                .apply {
+                    country?.let { putExtra(COUNTRY, country) }
+                    language?.let { putExtra(LANGUAGE, language) }
+                    source?.let { putExtra(SOURCE, source) }
+                }
+        }
+
+    }
+
+
     @Inject
     lateinit var newsListViewModel: NewsListViewModel
 
@@ -34,21 +53,27 @@ class NewsListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityNewsListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val intent = intent
-        val sourceId = intent.getStringExtra("sourceId")
-        val countryId = intent.getStringExtra("countryId")
-        val languageId = intent.getStringExtra("languageId")
-        if (sourceId != null) {
-            newsListViewModel.fetchNewsOnSrc(sourceId)
-        };
-        if (countryId != null) {
-            newsListViewModel.fetchNewsOnCountry(countryId)
-        };
-        if (languageId != null) {
-            newsListViewModel.fetchNewsOnLanguage(languageId)
-        };
         setupUI()
         setupObserver()
+        getIntentAndFetchData()
+    }
+
+    private fun getIntentAndFetchData() {
+
+        val country = intent.getStringExtra(COUNTRY)
+        val language = intent.getStringExtra(LANGUAGE)
+        val source = intent.getStringExtra(SOURCE)
+
+        language?.let {
+            newsListViewModel.fetchNewsOnLanguage(it)
+        }
+        country?.let {
+            newsListViewModel.fetchNewsOnCountry(it)
+        }
+        source?.let {
+            newsListViewModel.fetchNewsOnSrc(it)
+        }
+
     }
 
     private fun setupUI() {

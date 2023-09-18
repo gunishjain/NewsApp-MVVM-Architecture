@@ -22,7 +22,7 @@
         android:id="@+id/newsSrc"
         android:layout_width="275dp"
         android:layout_height="100dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="100dp"
         android:text="@string/sources"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@id/countries"

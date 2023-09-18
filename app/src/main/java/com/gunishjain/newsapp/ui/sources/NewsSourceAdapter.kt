@@ -17,9 +17,11 @@ class NewsSourceAdapter (private val sourceList: ArrayList<Source>):
                     binding.tvSrc.text = source.name
 
                     itemView.setOnClickListener {
-                      val intent = Intent(itemView.context, NewsListActivity::class.java)
-                       intent.putExtra("sourceId", source.id)
-                       itemView.context.startActivity(intent)
+
+                       itemView.context.startActivity(
+                           NewsListActivity.getStartIntent(itemView.context, source=source.id)
+                       )
+
                     }
                 }
             }

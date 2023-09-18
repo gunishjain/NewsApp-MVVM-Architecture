@@ -49,9 +49,7 @@ class LanguageSelectionActivity : AppCompatActivity() {
             view.tvSrc.text = eachItem.languageName
 
             view.root.setOnClickListener {
-                val intent = Intent(view.root.context, NewsListActivity::class.java)
-                intent.putExtra("languageId", eachItem.languageId)
-                startActivity(intent)
+                startActivity(NewsListActivity.getStartIntent(this, language = eachItem.languageId))
             }
 
         }
