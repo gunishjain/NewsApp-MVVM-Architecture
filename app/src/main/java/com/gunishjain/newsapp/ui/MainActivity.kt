@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.gunishjain.newsapp.databinding.ActivityMainBinding
+import com.gunishjain.newsapp.ui.search.SearchNewsActivity
 import com.gunishjain.newsapp.ui.selections.CountrySelectionActivity
 import com.gunishjain.newsapp.ui.selections.LanguageSelectionActivity
 import com.gunishjain.newsapp.ui.sources.NewsSourceActivity
@@ -18,24 +19,33 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.topHeadlines.setOnClickListener {
-            val intent = Intent(this,TopHeadlinesActivity::class.java)
-            startActivity(intent)
-        }
+        binding.apply {
 
-        binding.newsSrc.setOnClickListener {
-            val intent = Intent(this,NewsSourceActivity::class.java)
-            startActivity(intent)
-        }
+            topHeadlines.setOnClickListener {
+                val intent = Intent(it.context, TopHeadlinesActivity::class.java)
+                startActivity(intent)
+            }
 
-        binding.countries.setOnClickListener {
-            val intent = Intent(this,CountrySelectionActivity::class.java)
-            startActivity(intent)
-        }
+            newsSrc.setOnClickListener {
+                val intent = Intent(it.context, NewsSourceActivity::class.java)
+                startActivity(intent)
+            }
 
-        binding.lang.setOnClickListener {
-            val intent = Intent(this,LanguageSelectionActivity::class.java)
-            startActivity(intent)
+            countries.setOnClickListener {
+                val intent = Intent(it.context, CountrySelectionActivity::class.java)
+                startActivity(intent)
+            }
+
+            lang.setOnClickListener {
+                val intent = Intent(it.context, LanguageSelectionActivity::class.java)
+                startActivity(intent)
+            }
+
+            search.setOnClickListener {
+                val intent = Intent(it.context, SearchNewsActivity::class.java)
+                startActivity(intent)
+            }
+
         }
 
     }

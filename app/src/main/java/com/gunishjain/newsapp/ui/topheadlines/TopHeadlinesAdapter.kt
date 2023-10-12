@@ -46,6 +46,11 @@ class TopHeadlinesAdapter (private val articleList: ArrayList<Article>
 
     fun addArticles(list: List<Article>) {
         articleList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun clearList(){
+        articleList.clear()
     }
 
 }

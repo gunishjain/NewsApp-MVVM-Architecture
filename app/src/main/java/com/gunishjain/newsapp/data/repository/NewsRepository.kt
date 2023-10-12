@@ -3,8 +3,10 @@ package com.gunishjain.newsapp.data.repository
 import com.gunishjain.newsapp.data.api.NetworkService
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.model.Source
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -52,5 +54,14 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
         }.map {
             it.articles
         }
+    }
+
+    fun getSearchResult(query : String) : Flow<List<Article>> {
+        return flow {
+            emit(networkService.getSearchResult(query))
+        }.map {
+            it.articles
+        }
+
     }
 }

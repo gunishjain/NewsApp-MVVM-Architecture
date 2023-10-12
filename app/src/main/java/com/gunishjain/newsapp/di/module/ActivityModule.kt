@@ -11,6 +11,7 @@ import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.di.ActivityContext
 import com.gunishjain.newsapp.ui.base.ViewModelProviderFactory
 import com.gunishjain.newsapp.ui.newslist.NewsListViewModel
+import com.gunishjain.newsapp.ui.search.SearchNewsViewModel
 import com.gunishjain.newsapp.ui.selections.SelectionsViewModel
 import com.gunishjain.newsapp.ui.sources.NewsSourceAdapter
 import com.gunishjain.newsapp.ui.sources.NewsSourceViewModel
@@ -60,6 +61,14 @@ class ActivityModule(private val activity: AppCompatActivity) {
         ViewModelProviderFactory(SelectionsViewModel::class){
             SelectionsViewModel(newsLocalRepository)
         })[SelectionsViewModel::class.java]
+    }
+
+    @Provides
+    fun provideSearchNewsViewModel(newsRepository: NewsRepository) : SearchNewsViewModel {
+        return ViewModelProvider(activity,
+            ViewModelProviderFactory(SearchNewsViewModel::class){
+                SearchNewsViewModel(newsRepository)
+            })[SearchNewsViewModel::class.java]
     }
 
     @Provides
