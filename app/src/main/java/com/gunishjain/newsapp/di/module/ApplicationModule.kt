@@ -7,9 +7,11 @@ import com.gunishjain.newsapp.data.repository.NewsLocalRepository
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.di.ApplicationContext
 import com.gunishjain.newsapp.di.BaseUrl
+import com.gunishjain.newsapp.utils.APIKeyInterceptor
 import com.gunishjain.newsapp.utils.AppConstant
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -40,6 +42,7 @@ class ApplicationModule(private val application: NewsApplication) {
     ) :NetworkService {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
+            .client(OkHttpClient().newBuilder().addInterceptor(APIKeyInterceptor()).build())
             .addConverterFactory(gsonConverterFactory)
             .build()
             .create(NetworkService::class.java)
