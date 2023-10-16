@@ -1,6 +1,5 @@
 package com.gunishjain.newsapp.ui.selections
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.NewsApplication
-import com.gunishjain.newsapp.data.model.Country
 import com.gunishjain.newsapp.data.model.Language
 import com.gunishjain.newsapp.databinding.ActivityLanguageSelectionBinding
 import com.gunishjain.newsapp.databinding.SourceItemLayoutBinding
@@ -40,18 +38,34 @@ class LanguageSelectionActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupUI()
         setupObserver()
+        onButtonClick()
+    }
+
+    private fun onButtonClick() {
+        binding.proceed.setOnClickListener {
+            proceedWithSelectedLanguages()
+        }
+    }
+
+    private fun proceedWithSelectedLanguages() {
+
+        var selectedLanguages = languageAdapter.getSelectedItems()
+        if (selectedLanguages.size in 1..2) {
+            // Create an intent and pass the selected language IDs to the NewsListActivity
+            val languageIds = selectedLanguages.map { it.languageId }
+            startActivity(NewsListActivity.getStartIntent(this, languages = languageIds))
+        } else {
+           Toast.makeText(this@LanguageSelectionActivity,
+               "Select At most Two Languages",Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupUI() {
 
         languageAdapter.expressionViewHolderBinding = { eachItem,viewBinding->
-            var view = viewBinding as SourceItemLayoutBinding
+
+            val view = viewBinding as SourceItemLayoutBinding
             view.tvSrc.text = eachItem.languageName
-
-            view.root.setOnClickListener {
-                startActivity(NewsListActivity.getStartIntent(this, language = eachItem.languageId))
-            }
-
         }
 
         languageAdapter.expressionOnCreateViewHolder = { viewGroup->
@@ -65,6 +79,7 @@ class LanguageSelectionActivity : AppCompatActivity() {
                 LinearLayoutManager.VERTICAL,false)
             adapter=languageAdapter
         }
+
     }
 
     private fun setupObserver() {
@@ -105,4 +120,10 @@ class LanguageSelectionActivity : AppCompatActivity() {
             .applicationComponent((application as NewsApplication).applicationComponent)
             .activityModule(ActivityModule(this)).build().inject(this)
     }
+
+    override fun onStop() {
+        super.onStop()
+        languageAdapter.clearSelectedItems()
+    }
+
 }

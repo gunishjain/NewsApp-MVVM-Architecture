@@ -23,6 +23,7 @@ class TopHeadlinesViewModel (private val newsRepository: NewsRepository) : ViewM
 
     private fun fetchNews() {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             newsRepository.getTopHeadlines(COUNTRY)
                 .catch { e->
                     _uiState.value=UiState.Error(e.toString())

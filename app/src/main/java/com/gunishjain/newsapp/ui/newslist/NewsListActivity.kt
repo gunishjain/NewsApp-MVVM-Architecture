@@ -28,11 +28,11 @@ class NewsListActivity : AppCompatActivity() {
         const val SOURCE = "SOURCE"
         const val LANGUAGE = "LANGUAGE"
 
-        fun getStartIntent(context: Context, country: String? = null, language: String? = null, source: String? = null): Intent {
+        fun getStartIntent(context: Context, countries: List<String?>? = null, languages: List<String?>? = null, source: String? = null): Intent {
             return Intent(context, NewsListActivity::class.java)
                 .apply {
-                    country?.let { putExtra(COUNTRY, country) }
-                    language?.let { putExtra(LANGUAGE, language) }
+                    countries?.let { putStringArrayListExtra(COUNTRY, ArrayList(countries)) }
+                    languages?.let { putStringArrayListExtra(LANGUAGE, ArrayList(languages)) }
                     source?.let { putExtra(SOURCE, source) }
                 }
         }
@@ -60,8 +60,8 @@ class NewsListActivity : AppCompatActivity() {
 
     private fun getIntentAndFetchData() {
 
-        val country = intent.getStringExtra(COUNTRY)
-        val language = intent.getStringExtra(LANGUAGE)
+        val country = intent.getStringArrayListExtra(COUNTRY)
+        val language = intent.getStringArrayListExtra(LANGUAGE)
         val source = intent.getStringExtra(SOURCE)
 
         language?.let {

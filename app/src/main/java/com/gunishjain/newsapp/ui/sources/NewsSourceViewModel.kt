@@ -23,6 +23,7 @@ class NewsSourceViewModel(private val newsRepository: NewsRepository) : ViewMode
 
     private fun fetchSources() {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             newsRepository.getNewsSources()
                 .catch {e->
                     _uiState.value=UiState.Error(e.toString())
