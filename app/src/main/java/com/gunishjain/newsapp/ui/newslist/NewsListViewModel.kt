@@ -1,15 +1,15 @@
 package com.gunishjain.newsapp.ui.newslist
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.repository.NewsRepository
+import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class NewsListViewModel(private val newsRepository: NewsRepository) : ViewModel(){
+class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewModel(){
 
     private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
     val uiState : StateFlow<UiState<List<Article>>> = _uiState

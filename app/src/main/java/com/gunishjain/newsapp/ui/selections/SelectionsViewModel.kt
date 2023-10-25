@@ -1,19 +1,17 @@
 package com.gunishjain.newsapp.ui.selections
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gunishjain.newsapp.data.model.Country
 import com.gunishjain.newsapp.data.model.Language
-import com.gunishjain.newsapp.data.model.Source
 import com.gunishjain.newsapp.data.repository.NewsLocalRepository
+import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SelectionsViewModel(private val newsLocalRepository: NewsLocalRepository): ViewModel() {
+class SelectionsViewModel(private val newsLocalRepository: NewsLocalRepository): BaseViewModel() {
 
     private val _uiStateCountry = MutableStateFlow<UiState<List<Country>>>(UiState.Loading)
 

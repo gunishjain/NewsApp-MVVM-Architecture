@@ -1,54 +1,44 @@
 package com.gunishjain.newsapp.ui.sources
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gunishjain.newsapp.NewsApplication
-import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.model.Source
 import com.gunishjain.newsapp.databinding.ActivityNewsSourceBinding
-import com.gunishjain.newsapp.di.component.DaggerActivityComponent
-import com.gunishjain.newsapp.di.module.ActivityModule
+import com.gunishjain.newsapp.di.component.ActivityComponent
+import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NewsSourceActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var sourceVM : NewsSourceViewModel
+class NewsSourceActivity : BaseActivity<NewsSourceViewModel,ActivityNewsSourceBinding>() {
 
     @Inject
     lateinit var sourceAdapter: NewsSourceAdapter
 
-    private lateinit var binding: ActivityNewsSourceBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
-        super.onCreate(savedInstanceState)
-        binding = ActivityNewsSourceBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setupUI()
-        setupObserver()
+    override fun injectDependencies(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
-    private fun setupUI() {
+    override fun getViewBinding(): ActivityNewsSourceBinding {
+        return ActivityNewsSourceBinding.inflate(layoutInflater)
+    }
+
+    override fun setupUI() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter=sourceAdapter
         }
     }
 
-    private fun setupObserver() {
+    override fun setupObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                sourceVM.uiState.collect {
+                viewModel.uiState.collect {
                     when(it) {
                         is UiState.Success ->{
                             binding.progressBar.visibility = View.GONE
@@ -75,12 +65,5 @@ class NewsSourceActivity : AppCompatActivity() {
         sourceAdapter.addSources(sourceList)
         sourceAdapter.notifyDataSetChanged()
     }
-
-    private fun injectDependencies() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as NewsApplication).applicationComponent)
-            .activityModule(ActivityModule(this)).build().inject(this)
-    }
-
 
 }

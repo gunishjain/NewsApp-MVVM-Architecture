@@ -1,6 +1,5 @@
 package com.gunishjain.newsapp.ui.selections
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,37 +8,33 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gunishjain.newsapp.NewsApplication
 import com.gunishjain.newsapp.data.model.Country
 import com.gunishjain.newsapp.databinding.ActivityCountrySelectionBinding
 import com.gunishjain.newsapp.databinding.SourceItemLayoutBinding
-import com.gunishjain.newsapp.di.component.DaggerActivityComponent
-import com.gunishjain.newsapp.di.module.ActivityModule
+import com.gunishjain.newsapp.di.component.ActivityComponent
+import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.newslist.NewsListActivity
 import com.gunishjain.newsapp.utils.genericrecyclerview.BaseAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CountrySelectionActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var selectionVM: SelectionsViewModel
+class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountrySelectionBinding>() {
 
     @Inject
     lateinit var countryAdapter: BaseAdapter<Country>
 
-
-    private lateinit var binding : ActivityCountrySelectionBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
         super.onCreate(savedInstanceState)
-        binding = ActivityCountrySelectionBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setupUI()
-        setupObserver()
         onButtonClick()
+    }
+
+    override fun injectDependencies(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
+    }
+
+    override fun getViewBinding(): ActivityCountrySelectionBinding {
+        return ActivityCountrySelectionBinding.inflate(layoutInflater)
     }
 
     private fun onButtonClick() {
@@ -60,10 +55,10 @@ class CountrySelectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupUI() {
+    override fun setupUI() {
 
         countryAdapter.expressionViewHolderBinding = { eachItem,viewBinding->
-            var view = viewBinding as SourceItemLayoutBinding
+            val view = viewBinding as SourceItemLayoutBinding
             view.tvSrc.text = eachItem.countryName
 
         }
@@ -80,11 +75,11 @@ class CountrySelectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupObserver() {
+    override fun setupObserver() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectionVM.uiStateCountry.collect {
+                viewModel.uiStateCountry.collect {
                     when (it) {
                         is UiState.Success -> {
                             renderList(it.data)
@@ -111,13 +106,6 @@ class CountrySelectionActivity : AppCompatActivity() {
 
     private fun renderList(data: List<Country>) {
         countryAdapter.listOfItems =data
-    }
-
-
-    private fun injectDependencies() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as NewsApplication).applicationComponent)
-            .activityModule(ActivityModule(this)).build().inject(this)
     }
 
     override fun onStop() {

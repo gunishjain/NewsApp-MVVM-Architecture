@@ -1,6 +1,5 @@
 package com.gunishjain.newsapp.ui.selections
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,36 +8,33 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gunishjain.newsapp.NewsApplication
 import com.gunishjain.newsapp.data.model.Language
 import com.gunishjain.newsapp.databinding.ActivityLanguageSelectionBinding
 import com.gunishjain.newsapp.databinding.SourceItemLayoutBinding
-import com.gunishjain.newsapp.di.component.DaggerActivityComponent
-import com.gunishjain.newsapp.di.module.ActivityModule
+import com.gunishjain.newsapp.di.component.ActivityComponent
+import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.newslist.NewsListActivity
 import com.gunishjain.newsapp.utils.genericrecyclerview.BaseAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LanguageSelectionActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var selectionVM: SelectionsViewModel
+class LanguageSelectionActivity : BaseActivity<SelectionsViewModel,ActivityLanguageSelectionBinding>() {
 
     @Inject
     lateinit var languageAdapter: BaseAdapter<Language>
 
-    private lateinit var binding: ActivityLanguageSelectionBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
         super.onCreate(savedInstanceState)
-        binding = ActivityLanguageSelectionBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setupUI()
-        setupObserver()
         onButtonClick()
+    }
+
+    override fun injectDependencies(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
+    }
+
+    override fun getViewBinding(): ActivityLanguageSelectionBinding {
+        return ActivityLanguageSelectionBinding.inflate(layoutInflater)
     }
 
     private fun onButtonClick() {
@@ -60,7 +56,7 @@ class LanguageSelectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupUI() {
+    override fun setupUI() {
 
         languageAdapter.expressionViewHolderBinding = { eachItem,viewBinding->
 
@@ -82,11 +78,11 @@ class LanguageSelectionActivity : AppCompatActivity() {
 
     }
 
-    private fun setupObserver() {
+    override fun setupObserver() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectionVM.uiStateLanguage.collect {
+                viewModel.uiStateLanguage.collect {
                     when (it) {
                         is UiState.Success -> {
                             renderList(it.data)
@@ -113,12 +109,6 @@ class LanguageSelectionActivity : AppCompatActivity() {
 
     private fun renderList(data: List<Language>) {
         languageAdapter.listOfItems =data
-    }
-
-    private fun injectDependencies() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as NewsApplication).applicationComponent)
-            .activityModule(ActivityModule(this)).build().inject(this)
     }
 
     override fun onStop() {

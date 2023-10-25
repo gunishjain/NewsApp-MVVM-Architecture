@@ -13,15 +13,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.NewsApplication
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.databinding.ActivityNewsListBinding
+import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.di.component.DaggerActivityComponent
 import com.gunishjain.newsapp.di.module.ActivityModule
+import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesAdapter
+import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class NewsListActivity : AppCompatActivity() {
+class NewsListActivity : BaseActivity<NewsListViewModel,ActivityNewsListBinding>() {
 
     companion object {
         const val COUNTRY = "COUNTRY"
@@ -39,22 +42,19 @@ class NewsListActivity : AppCompatActivity() {
 
     }
 
-
-    @Inject
-    lateinit var newsListViewModel: NewsListViewModel
-
     @Inject
     lateinit var newsListAdapter: TopHeadlinesAdapter
 
-    private lateinit var binding: ActivityNewsListBinding
+    override fun injectDependencies(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
+    }
+
+    override fun getViewBinding(): ActivityNewsListBinding {
+        return ActivityNewsListBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        injectDependencies()
         super.onCreate(savedInstanceState)
-        binding= ActivityNewsListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setupUI()
-        setupObserver()
         getIntentAndFetchData()
     }
 
@@ -65,29 +65,29 @@ class NewsListActivity : AppCompatActivity() {
         val source = intent.getStringExtra(SOURCE)
 
         language?.let {
-            newsListViewModel.fetchNewsOnLanguage(it)
+            viewModel.fetchNewsOnLanguage(it)
         }
         country?.let {
-            newsListViewModel.fetchNewsOnCountry(it)
+            viewModel.fetchNewsOnCountry(it)
         }
         source?.let {
-            newsListViewModel.fetchNewsOnSrc(it)
+            viewModel.fetchNewsOnSrc(it)
         }
 
     }
 
-    private fun setupUI() {
+    override fun setupUI() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter=newsListAdapter
         }
     }
 
-    private fun setupObserver() {
+    override fun setupObserver() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                newsListViewModel.uiState.collect {
+                viewModel.uiState.collect {
                     when(it) {
                         is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
@@ -118,9 +118,5 @@ class NewsListActivity : AppCompatActivity() {
         newsListAdapter.notifyDataSetChanged()
     }
 
-    private fun injectDependencies() {
-        DaggerActivityComponent.builder()
-            .applicationComponent((application as NewsApplication).applicationComponent)
-            .activityModule(ActivityModule(this)).build().inject(this)
-    }
+
 }

@@ -1,10 +1,9 @@
 package com.gunishjain.newsapp.ui.search
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.repository.NewsRepository
+import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.AppConstant.DEBOUNCE_TIMEOUT
 import com.gunishjain.newsapp.utils.AppConstant.MIN_SEARCH_CHAR
@@ -12,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class SearchNewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
+class SearchNewsViewModel(private val newsRepository: NewsRepository) : BaseViewModel() {
 
     private val searchText = MutableStateFlow("")
     private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Success(emptyList()))
