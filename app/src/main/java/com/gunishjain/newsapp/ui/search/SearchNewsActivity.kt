@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -35,7 +36,6 @@ class SearchNewsActivity : AppCompatActivity() {
         binding=ActivitySearchNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupUI()
-        setupQuery()
         setupObserver()
 
     }
@@ -45,16 +45,22 @@ class SearchNewsActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter=searchNewsAdapter
         }
-    }
 
-    private fun setupQuery() {
 
-        lifecycleScope.launch {
-            binding.searchBar.getQueryTextChangeStateFlow()
-                .collect {
-                    searchNewsViewModel.onQuerySearch(it)
-                }
-        }
+       binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
+           android.widget.SearchView.OnQueryTextListener {
+           override fun onQueryTextSubmit(query: String?): Boolean {
+               return true
+           }
+
+           override fun onQueryTextChange(newText: String?): Boolean {
+               if (newText != null) {
+                   searchNewsViewModel.onQuerySearch(newText)
+               }
+               return true
+           }
+       })
+
     }
 
     private fun setupObserver() {
@@ -86,8 +92,7 @@ class SearchNewsActivity : AppCompatActivity() {
     }
 
     private fun renderList(articleList: List<Article>) {
-        searchNewsAdapter.clearList();
-        searchNewsAdapter.addArticles(articleList)
+        searchNewsAdapter.updateData(articleList)
         searchNewsAdapter.notifyDataSetChanged()
     }
 

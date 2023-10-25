@@ -43,14 +43,13 @@ class TopHeadlinesAdapter (private val articleList: ArrayList<Article>
     override fun onBindViewHolder(holder: HeadlineViewHolder, position: Int) =
         holder.bind(articleList[position])
 
-
     fun addArticles(list: List<Article>) {
         articleList.addAll(list)
         notifyDataSetChanged()
     }
-
-    fun clearList(){
+    fun updateData(list: List<Article>) {
         articleList.clear()
+        articleList.addAll(list)
     }
 
 }
