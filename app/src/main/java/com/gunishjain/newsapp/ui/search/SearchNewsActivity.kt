@@ -1,5 +1,7 @@
 package com.gunishjain.newsapp.ui.search
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -17,6 +19,12 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class SearchNewsActivity : BaseActivity<SearchNewsViewModel,ActivitySearchNewsBinding>() {
+
+    companion object {
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, SearchNewsActivity::class.java)
+        }
+    }
 
     @Inject
     lateinit var searchNewsAdapter: TopHeadlinesAdapter

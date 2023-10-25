@@ -9,6 +9,7 @@ import com.gunishjain.newsapp.ui.selections.CountrySelectionActivity
 import com.gunishjain.newsapp.ui.selections.LanguageSelectionActivity
 import com.gunishjain.newsapp.ui.sources.NewsSourceActivity
 import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesActivity
+import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,28 +23,23 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
 
             topHeadlines.setOnClickListener {
-                val intent = Intent(it.context, TopHeadlinesActivity::class.java)
-                startActivity(intent)
+                startActivity(TopHeadlinesActivity.getStartIntent(this@MainActivity, COUNTRY))
             }
 
             newsSrc.setOnClickListener {
-                val intent = Intent(it.context, NewsSourceActivity::class.java)
-                startActivity(intent)
+                startActivity(NewsSourceActivity.getStartIntent(this@MainActivity))
             }
 
             countries.setOnClickListener {
-                val intent = Intent(it.context, CountrySelectionActivity::class.java)
-                startActivity(intent)
+                startActivity(CountrySelectionActivity.getStartIntent(this@MainActivity))
             }
 
             lang.setOnClickListener {
-                val intent = Intent(it.context, LanguageSelectionActivity::class.java)
-                startActivity(intent)
+                startActivity(LanguageSelectionActivity.getStartIntent(this@MainActivity))
             }
 
             search.setOnClickListener {
-                val intent = Intent(it.context, SearchNewsActivity::class.java)
-                startActivity(intent)
+                startActivity(SearchNewsActivity.getStartIntent(this@MainActivity))
             }
 
         }

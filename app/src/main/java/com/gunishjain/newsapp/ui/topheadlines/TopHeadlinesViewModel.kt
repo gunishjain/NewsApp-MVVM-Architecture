@@ -16,14 +16,10 @@ class TopHeadlinesViewModel (private val newsRepository: NewsRepository) : BaseV
     private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
     val uiState : StateFlow<UiState<List<Article>>> = _uiState
 
-    init {
-        fetchNews()
-    }
-
-    private fun fetchNews() {
+     fun fetchNews(country: String) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            newsRepository.getTopHeadlines(COUNTRY)
+            newsRepository.getTopHeadlines(country)
                 .catch { e->
                     _uiState.value=UiState.Error(e.toString())
                 }.collect {

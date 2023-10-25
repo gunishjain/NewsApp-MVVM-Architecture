@@ -1,6 +1,8 @@
 package com.gunishjain.newsapp.ui.sources
 
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -16,6 +18,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NewsSourceActivity : BaseActivity<NewsSourceViewModel,ActivityNewsSourceBinding>() {
+
+    companion object {
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, NewsSourceActivity::class.java)
+        }
+    }
 
     @Inject
     lateinit var sourceAdapter: NewsSourceAdapter

@@ -1,6 +1,9 @@
 package com.gunishjain.newsapp.ui.topheadlines
 
 
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
@@ -17,6 +20,19 @@ import javax.inject.Inject
 
 class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadlinesBinding>() {
 
+    companion object {
+
+        const val EXTRAS_COUNTRY = "EXTRAS_COUNTRY"
+
+        fun getStartIntent(context: Context, country: String): Intent {
+            return Intent(context, TopHeadlinesActivity::class.java)
+                .apply {
+                    putExtra(EXTRAS_COUNTRY, country)
+                }
+        }
+
+    }
+
     @Inject
     lateinit var topHeadlineAdapter: TopHeadlinesAdapter
 
@@ -26,6 +42,18 @@ class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadli
 
     override fun getViewBinding(): ActivityTopHeadlinesBinding {
         return ActivityTopHeadlinesBinding.inflate(layoutInflater)
+    }
+
+    private fun getIntentAndFetchData() {
+        val country = intent.getStringExtra(EXTRAS_COUNTRY)
+        country?.let {
+            viewModel.fetchNews(country)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getIntentAndFetchData()
     }
 
     override fun setupUI() {

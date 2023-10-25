@@ -1,5 +1,7 @@
 package com.gunishjain.newsapp.ui.selections
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountrySelectionBinding>() {
+
+    companion object {
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, CountrySelectionActivity::class.java)
+        }
+    }
 
     @Inject
     lateinit var countryAdapter: BaseAdapter<Country>
