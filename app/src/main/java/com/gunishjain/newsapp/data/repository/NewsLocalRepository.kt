@@ -10,18 +10,15 @@ import kotlinx.coroutines.flow.flow
 
 class NewsLocalRepository {
 
-    private val countryList = countries;
-    private val languageList = languages;
-
     fun getCountries() : Flow<List<Country>> {
         return flow {
-            emit(countryList)
+            emit(countries)
         }
     }
 
     fun getLanguages() : Flow<List<Language>> {
         return flow {
-            emit(languageList)
+            emit(languages)
         }
     }
 
