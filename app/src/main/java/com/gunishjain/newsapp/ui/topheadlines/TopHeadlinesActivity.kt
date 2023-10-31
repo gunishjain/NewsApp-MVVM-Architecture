@@ -3,9 +3,11 @@ package com.gunishjain.newsapp.ui.topheadlines
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -15,6 +17,7 @@ import com.gunishjain.newsapp.databinding.ActivityTopHeadlinesBinding
 import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
+import com.gunishjain.newsapp.utils.ItemClickListener
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -61,6 +64,13 @@ class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadli
             layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
             adapter=topHeadlineAdapter
         }
+
+        topHeadlineAdapter.itemClickListener= {
+            val builder = CustomTabsIntent.Builder()
+            val customTabsIntent = builder.build()
+            customTabsIntent.launchUrl(this, Uri.parse(it.url))
+        }
+
     }
 
     override fun setupObserver() {

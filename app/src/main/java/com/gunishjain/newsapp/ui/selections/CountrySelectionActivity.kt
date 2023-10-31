@@ -17,7 +17,7 @@ import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.newslist.NewsListActivity
-import com.gunishjain.newsapp.utils.genericrecyclerview.BaseAdapter
+import com.gunishjain.newsapp.ui.base.genericrecyclerview.BaseAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,7 +55,7 @@ class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountr
         val selectedCountries = countryAdapter.getSelectedItems()
         if (selectedCountries.size in 1..2) {
             // Create an intent and pass the selected language IDs to the NewsListActivity
-            val countryIds = selectedCountries.map { it.countryId }
+            val countryIds = selectedCountries.map { it.id }
             startActivity(NewsListActivity.getStartIntent(this, countries = countryIds))
         } else {
             Toast.makeText(this@CountrySelectionActivity,
@@ -67,7 +67,7 @@ class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountr
 
         countryAdapter.expressionViewHolderBinding = { eachItem,viewBinding->
             val view = viewBinding as SourceItemLayoutBinding
-            view.tvSrc.text = eachItem.countryName
+            view.tvSrc.text = eachItem.name
 
         }
 

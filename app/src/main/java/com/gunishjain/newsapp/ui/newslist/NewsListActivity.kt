@@ -2,36 +2,38 @@ package com.gunishjain.newsapp.ui.newslist
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gunishjain.newsapp.NewsApplication
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.databinding.ActivityNewsListBinding
 import com.gunishjain.newsapp.di.component.ActivityComponent
-import com.gunishjain.newsapp.di.component.DaggerActivityComponent
-import com.gunishjain.newsapp.di.module.ActivityModule
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesAdapter
-import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class NewsListActivity : BaseActivity<NewsListViewModel,ActivityNewsListBinding>() {
+class NewsListActivity : BaseActivity<NewsListViewModel, ActivityNewsListBinding>() {
 
     companion object {
         const val COUNTRY = "COUNTRY"
         const val SOURCE = "SOURCE"
         const val LANGUAGE = "LANGUAGE"
 
-        fun getStartIntent(context: Context, countries: List<String?>? = null, languages: List<String?>? = null, source: String? = null): Intent {
+        fun getStartIntent(
+            context: Context,
+            countries: List<String?>? = null,
+            languages: List<String?>? = null,
+            source: String? = null
+        ): Intent {
             return Intent(context, NewsListActivity::class.java)
                 .apply {
                     countries?.let { putStringArrayListExtra(COUNTRY, ArrayList(countries)) }
@@ -78,9 +80,16 @@ class NewsListActivity : BaseActivity<NewsListViewModel,ActivityNewsListBinding>
 
     override fun setupUI() {
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-            adapter=newsListAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = newsListAdapter
         }
+
+        newsListAdapter.itemClickListener= {
+            val builder = CustomTabsIntent.Builder()
+            val customTabsIntent = builder.build()
+            customTabsIntent.launchUrl(this, Uri.parse(it.url))
+        }
+
     }
 
     override fun setupObserver() {
@@ -88,7 +97,7 @@ class NewsListActivity : BaseActivity<NewsListViewModel,ActivityNewsListBinding>
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
-                    when(it) {
+                    when (it) {
                         is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             renderList(it.data)
@@ -103,7 +112,8 @@ class NewsListActivity : BaseActivity<NewsListViewModel,ActivityNewsListBinding>
                         }
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(this@NewsListActivity,it.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@NewsListActivity, it.message, Toast.LENGTH_LONG)
+                                .show()
                         }
 
                     }

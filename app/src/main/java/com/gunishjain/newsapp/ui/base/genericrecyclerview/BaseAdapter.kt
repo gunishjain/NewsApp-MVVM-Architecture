@@ -1,4 +1,4 @@
-package com.gunishjain.newsapp.utils.genericrecyclerview
+package com.gunishjain.newsapp.ui.base.genericrecyclerview
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

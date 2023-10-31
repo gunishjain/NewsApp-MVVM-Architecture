@@ -1,8 +1,7 @@
 package com.gunishjain.newsapp.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.gunishjain.newsapp.databinding.ActivityMainBinding
 import com.gunishjain.newsapp.ui.search.SearchNewsActivity
 import com.gunishjain.newsapp.ui.selections.CountrySelectionActivity

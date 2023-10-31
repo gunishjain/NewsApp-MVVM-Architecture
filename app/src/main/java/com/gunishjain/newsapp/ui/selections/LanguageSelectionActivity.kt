@@ -17,7 +17,7 @@ import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.newslist.NewsListActivity
-import com.gunishjain.newsapp.utils.genericrecyclerview.BaseAdapter
+import com.gunishjain.newsapp.ui.base.genericrecyclerview.BaseAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

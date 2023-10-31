@@ -14,10 +14,11 @@ import com.gunishjain.newsapp.databinding.ActivityNewsSourceBinding
 import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
+import com.gunishjain.newsapp.ui.newslist.NewsListActivity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NewsSourceActivity : BaseActivity<NewsSourceViewModel,ActivityNewsSourceBinding>() {
+class NewsSourceActivity : BaseActivity<NewsSourceViewModel, ActivityNewsSourceBinding>() {
 
     companion object {
         fun getStartIntent(context: Context): Intent {
@@ -38,17 +39,21 @@ class NewsSourceActivity : BaseActivity<NewsSourceViewModel,ActivityNewsSourceBi
 
     override fun setupUI() {
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-            adapter=sourceAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = sourceAdapter
+        }
+
+        sourceAdapter.itemClickListener = {
+            startActivity(NewsListActivity.getStartIntent(this, source = it.id))
         }
     }
 
     override fun setupObserver() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
-                    when(it) {
-                        is UiState.Success ->{
+                    when (it) {
+                        is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             renderList(it.data)
                             binding.recyclerView.visibility = View.VISIBLE
@@ -61,7 +66,8 @@ class NewsSourceActivity : BaseActivity<NewsSourceViewModel,ActivityNewsSourceBi
                         }
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.VISIBLE
-                            Toast.makeText(this@NewsSourceActivity,it.message,Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@NewsSourceActivity, it.message, Toast.LENGTH_LONG)
+                                .show()
                         }
                     }
                 }

@@ -2,9 +2,11 @@ package com.gunishjain.newsapp.ui.search
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -42,6 +44,12 @@ class SearchNewsActivity : BaseActivity<SearchNewsViewModel,ActivitySearchNewsBi
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter=searchNewsAdapter
+        }
+
+        searchNewsAdapter.itemClickListener= {
+            val builder = CustomTabsIntent.Builder()
+            val customTabsIntent = builder.build()
+            customTabsIntent.launchUrl(this, Uri.parse(it.url))
         }
 
 
