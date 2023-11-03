@@ -3,17 +3,16 @@ package com.gunishjain.newsapp.data.repository
 import com.gunishjain.newsapp.data.api.NetworkService
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.model.Source
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class NewsRepository @Inject constructor (private val networkService: NetworkService) {
+@Singleton
+class NewsRepository @Inject constructor(private val networkService: NetworkService) {
 
-    fun getTopHeadlines(country : String) : Flow<List<Article>> {
-
+    fun getTopHeadlines(country: String): Flow<List<Article>> {
         return flow {
             emit(networkService.getTopHeadlines(country))
         }.map {
@@ -22,7 +21,7 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
 
     }
 
-    fun getNewsEverything(sourceId : String) : Flow<List<Article>> {
+    fun getNewsEverything(sourceId: String): Flow<List<Article>> {
 
         return flow {
             emit(networkService.getNewsEverything(sourceId))
@@ -32,7 +31,7 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
 
     }
 
-    fun getNewsSources() : Flow<List<Source>> {
+    fun getNewsSources(): Flow<List<Source>> {
         return flow {
             emit(networkService.getNewsSources())
         }.map {
@@ -40,7 +39,7 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
         }
     }
 
-    fun getNewsCountry(countryId: String) : Flow<List<Article>> {
+    fun getNewsCountry(countryId: String): Flow<List<Article>> {
         return flow {
             emit(networkService.getNewsCountry(countryId))
         }.map {
@@ -48,7 +47,7 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
         }
     }
 
-    fun getNewsLanguage(languageId: String) : Flow<List<Article>> {
+    fun getNewsLanguage(languageId: String): Flow<List<Article>> {
         return flow {
             emit(networkService.getNewsLanguage(languageId))
         }.map {
@@ -56,7 +55,7 @@ class NewsRepository @Inject constructor (private val networkService: NetworkSer
         }
     }
 
-    fun getSearchResult(query : String) : Flow<List<Article>> {
+    fun getSearchResult(query: String): Flow<List<Article>> {
         return flow {
             emit(networkService.getSearchResult(query))
         }.map {

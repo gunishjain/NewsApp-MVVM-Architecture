@@ -13,15 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.data.model.Country
 import com.gunishjain.newsapp.databinding.ActivityCountrySelectionBinding
 import com.gunishjain.newsapp.databinding.SourceItemLayoutBinding
-import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
-import com.gunishjain.newsapp.ui.newslist.NewsListActivity
 import com.gunishjain.newsapp.ui.base.genericrecyclerview.BaseAdapter
+import com.gunishjain.newsapp.ui.newslist.NewsListActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountrySelectionBinding>() {
+@AndroidEntryPoint
+class CountrySelectionActivity :
+    BaseActivity<SelectionsViewModel, ActivityCountrySelectionBinding>(
+        SelectionsViewModel::class.java
+    ) {
 
     companion object {
         fun getStartIntent(context: Context): Intent {
@@ -37,9 +41,6 @@ class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountr
         onButtonClick()
     }
 
-    override fun injectDependencies(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
 
     override fun getViewBinding(): ActivityCountrySelectionBinding {
         return ActivityCountrySelectionBinding.inflate(layoutInflater)
@@ -58,28 +59,34 @@ class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountr
             val countryIds = selectedCountries.map { it.id }
             startActivity(NewsListActivity.getStartIntent(this, countries = countryIds))
         } else {
-            Toast.makeText(this@CountrySelectionActivity,
-                "Select At most Two Countries",Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@CountrySelectionActivity,
+                "Select At most Two Countries", Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     override fun setupUI() {
 
-        countryAdapter.expressionViewHolderBinding = { eachItem,viewBinding->
+        countryAdapter.expressionViewHolderBinding = { eachItem, viewBinding ->
             val view = viewBinding as SourceItemLayoutBinding
             view.tvSrc.text = eachItem.name
 
         }
 
-        countryAdapter.expressionOnCreateViewHolder = { viewGroup->
+        countryAdapter.expressionOnCreateViewHolder = { viewGroup ->
 
-            SourceItemLayoutBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+            SourceItemLayoutBinding.inflate(
+                LayoutInflater.from(viewGroup.context),
+                viewGroup,
+                false
+            )
         }
 
 
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-            adapter=countryAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = countryAdapter
         }
     }
 
@@ -113,7 +120,7 @@ class CountrySelectionActivity : BaseActivity<SelectionsViewModel,ActivityCountr
     }
 
     private fun renderList(data: List<Country>) {
-        countryAdapter.listOfItems =data
+        countryAdapter.listOfItems = data
     }
 
     override fun onStop() {

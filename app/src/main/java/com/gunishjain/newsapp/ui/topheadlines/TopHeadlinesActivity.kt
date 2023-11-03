@@ -14,14 +14,16 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.databinding.ActivityTopHeadlinesBinding
-import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
-import com.gunishjain.newsapp.utils.ItemClickListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadlinesBinding>() {
+@AndroidEntryPoint
+class TopHeadlinesActivity : BaseActivity<TopHeadlinesViewModel, ActivityTopHeadlinesBinding>(
+    TopHeadlinesViewModel::class.java
+) {
 
     companion object {
 
@@ -39,9 +41,6 @@ class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadli
     @Inject
     lateinit var topHeadlineAdapter: TopHeadlinesAdapter
 
-    override fun injectDependencies(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
 
     override fun getViewBinding(): ActivityTopHeadlinesBinding {
         return ActivityTopHeadlinesBinding.inflate(layoutInflater)
@@ -61,11 +60,11 @@ class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadli
 
     override fun setupUI() {
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false)
-            adapter=topHeadlineAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = topHeadlineAdapter
         }
 
-        topHeadlineAdapter.itemClickListener= {
+        topHeadlineAdapter.itemClickListener = {
             val builder = CustomTabsIntent.Builder()
             val customTabsIntent = builder.build()
             customTabsIntent.launchUrl(this, Uri.parse(it.url))
@@ -76,8 +75,8 @@ class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadli
     override fun setupObserver() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect{
-                    when(it) {
+                viewModel.uiState.collect {
+                    when (it) {
                         is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             renderList(it.data)
@@ -92,7 +91,7 @@ class TopHeadlinesActivity :BaseActivity<TopHeadlinesViewModel,ActivityTopHeadli
                         }
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(this@TopHeadlinesActivity,it.message,Toast.LENGTH_LONG)
+                            Toast.makeText(this@TopHeadlinesActivity, it.message, Toast.LENGTH_LONG)
                                 .show()
                         }
                     }

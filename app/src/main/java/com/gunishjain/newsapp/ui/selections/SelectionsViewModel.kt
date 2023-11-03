@@ -6,14 +6,18 @@ import com.gunishjain.newsapp.data.model.Language
 import com.gunishjain.newsapp.data.repository.NewsLocalRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SelectionsViewModel(private val newsLocalRepository: NewsLocalRepository) : BaseViewModel() {
+@HiltViewModel
+class SelectionsViewModel @Inject constructor(private val newsLocalRepository: NewsLocalRepository) :
+    BaseViewModel() {
 
     private val _uiStateCountry = MutableStateFlow<UiState<List<Country>>>(UiState.Loading)
     private val _uiStateLanguage = MutableStateFlow<UiState<List<Language>>>(UiState.Loading)

@@ -3,8 +3,6 @@ package com.gunishjain.newsapp.ui.base.genericrecyclerview
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.gunishjain.newsapp.data.model.Country
-import com.gunishjain.newsapp.data.model.Language
 
 class BaseAdapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
 

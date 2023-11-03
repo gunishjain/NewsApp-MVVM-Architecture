@@ -11,14 +11,17 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.data.model.Source
 import com.gunishjain.newsapp.databinding.ActivityNewsSourceBinding
-import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.newslist.NewsListActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NewsSourceActivity : BaseActivity<NewsSourceViewModel, ActivityNewsSourceBinding>() {
+@AndroidEntryPoint
+class NewsSourceActivity : BaseActivity<NewsSourceViewModel, ActivityNewsSourceBinding>(
+    NewsSourceViewModel::class.java
+) {
 
     companion object {
         fun getStartIntent(context: Context): Intent {
@@ -28,10 +31,6 @@ class NewsSourceActivity : BaseActivity<NewsSourceViewModel, ActivityNewsSourceB
 
     @Inject
     lateinit var sourceAdapter: NewsSourceAdapter
-
-    override fun injectDependencies(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
 
     override fun getViewBinding(): ActivityNewsSourceBinding {
         return ActivityNewsSourceBinding.inflate(layoutInflater)

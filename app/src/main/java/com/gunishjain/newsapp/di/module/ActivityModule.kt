@@ -1,90 +1,35 @@
 package com.gunishjain.newsapp.di.module
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.gunishjain.newsapp.data.model.Country
 import com.gunishjain.newsapp.data.model.Language
-import com.gunishjain.newsapp.data.repository.NewsLocalRepository
-import com.gunishjain.newsapp.data.repository.NewsRepository
-import com.gunishjain.newsapp.di.ActivityContext
-import com.gunishjain.newsapp.ui.base.ViewModelProviderFactory
 import com.gunishjain.newsapp.ui.base.genericrecyclerview.BaseAdapter
-import com.gunishjain.newsapp.ui.newslist.NewsListViewModel
-import com.gunishjain.newsapp.ui.search.SearchNewsViewModel
-import com.gunishjain.newsapp.ui.selections.SelectionsViewModel
 import com.gunishjain.newsapp.ui.sources.NewsSourceAdapter
-import com.gunishjain.newsapp.ui.sources.NewsSourceViewModel
-import com.gunishjain.newsapp.ui.topheadlines.TopHeadPageAdapter
 import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesAdapter
-import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesViewModel
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.scopes.ActivityScoped
 
 @Module
-class ActivityModule(private val activity: AppCompatActivity) {
+@InstallIn(ActivityComponent::class)
+class ActivityModule {
 
-    @ActivityContext
-    @Provides
-    fun provideContext(): Context {
-        return activity
-    }
-
-    @Provides
-    fun provideTopHeadlinesViewModel(newsRepository: NewsRepository): TopHeadlinesViewModel {
-        return ViewModelProvider(activity,
-            ViewModelProviderFactory(TopHeadlinesViewModel::class) {
-                TopHeadlinesViewModel(newsRepository)
-            })[TopHeadlinesViewModel::class.java]
-
-    }
-
-    @Provides
-    fun provideNewsSourceViewModel(newsRepository: NewsRepository): NewsSourceViewModel {
-        return ViewModelProvider(activity,
-            ViewModelProviderFactory(NewsSourceViewModel::class) {
-                NewsSourceViewModel(newsRepository)
-            })[NewsSourceViewModel::class.java]
-    }
-
-    @Provides
-    fun provideNewsListViewModel(newsRepository: NewsRepository): NewsListViewModel {
-        return ViewModelProvider(activity,
-            ViewModelProviderFactory(NewsListViewModel::class) {
-                NewsListViewModel(newsRepository)
-            })[NewsListViewModel::class.java]
-    }
-
-    @Provides
-    fun provideSelectionViewModel(newsLocalRepository: NewsLocalRepository): SelectionsViewModel {
-        return ViewModelProvider(activity,
-            ViewModelProviderFactory(SelectionsViewModel::class) {
-                SelectionsViewModel(newsLocalRepository)
-            })[SelectionsViewModel::class.java]
-    }
-
-    @Provides
-    fun provideSearchNewsViewModel(newsRepository: NewsRepository): SearchNewsViewModel {
-        return ViewModelProvider(activity,
-            ViewModelProviderFactory(SearchNewsViewModel::class) {
-                SearchNewsViewModel(newsRepository)
-            })[SearchNewsViewModel::class.java]
-    }
-
+    @ActivityScoped
     @Provides
     fun provideTopHeadlinesAdapter() = TopHeadlinesAdapter(ArrayList())
 
+    @ActivityScoped
     @Provides
     fun provideNewsSourceAdapter() = NewsSourceAdapter(ArrayList())
 
+    @ActivityScoped
     @Provides
     fun provideGenericCountryAdapter() = BaseAdapter<Country>()
 
+    @ActivityScoped
     @Provides
     fun provideGenericLanguageAdapter() = BaseAdapter<Language>()
-
-    @Provides
-    fun provideTopHeadPagingAdapter() = TopHeadPageAdapter()
 
 
 }

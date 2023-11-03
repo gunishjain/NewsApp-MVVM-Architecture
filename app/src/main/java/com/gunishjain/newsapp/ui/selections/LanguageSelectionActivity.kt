@@ -13,15 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.data.model.Language
 import com.gunishjain.newsapp.databinding.ActivityLanguageSelectionBinding
 import com.gunishjain.newsapp.databinding.SourceItemLayoutBinding
-import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
-import com.gunishjain.newsapp.ui.newslist.NewsListActivity
 import com.gunishjain.newsapp.ui.base.genericrecyclerview.BaseAdapter
+import com.gunishjain.newsapp.ui.newslist.NewsListActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LanguageSelectionActivity : BaseActivity<SelectionsViewModel,ActivityLanguageSelectionBinding>() {
+@AndroidEntryPoint
+class LanguageSelectionActivity :
+    BaseActivity<SelectionsViewModel, ActivityLanguageSelectionBinding>(
+        SelectionsViewModel::class.java
+    ) {
 
     companion object {
         fun getStartIntent(context: Context): Intent {
@@ -37,9 +41,6 @@ class LanguageSelectionActivity : BaseActivity<SelectionsViewModel,ActivityLangu
         onButtonClick()
     }
 
-    override fun injectDependencies(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
 
     override fun getViewBinding(): ActivityLanguageSelectionBinding {
         return ActivityLanguageSelectionBinding.inflate(layoutInflater)
@@ -59,29 +60,35 @@ class LanguageSelectionActivity : BaseActivity<SelectionsViewModel,ActivityLangu
             val languageIds = selectedLanguages.map { it.languageId }
             startActivity(NewsListActivity.getStartIntent(this, languages = languageIds))
         } else {
-           Toast.makeText(this@LanguageSelectionActivity,
-               "Select At most Two Languages",Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@LanguageSelectionActivity,
+                "Select At most Two Languages", Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     override fun setupUI() {
 
-        languageAdapter.expressionViewHolderBinding = { eachItem,viewBinding->
+        languageAdapter.expressionViewHolderBinding = { eachItem, viewBinding ->
 
             val view = viewBinding as SourceItemLayoutBinding
             view.tvSrc.text = eachItem.languageName
         }
 
-        languageAdapter.expressionOnCreateViewHolder = { viewGroup->
+        languageAdapter.expressionOnCreateViewHolder = { viewGroup ->
 
-            SourceItemLayoutBinding.inflate(LayoutInflater.from(viewGroup.context),
-                viewGroup, false)
+            SourceItemLayoutBinding.inflate(
+                LayoutInflater.from(viewGroup.context),
+                viewGroup, false
+            )
         }
 
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context,
-                LinearLayoutManager.VERTICAL,false)
-            adapter=languageAdapter
+            layoutManager = LinearLayoutManager(
+                context,
+                LinearLayoutManager.VERTICAL, false
+            )
+            adapter = languageAdapter
         }
 
     }
@@ -116,7 +123,7 @@ class LanguageSelectionActivity : BaseActivity<SelectionsViewModel,ActivityLangu
     }
 
     private fun renderList(data: List<Language>) {
-        languageAdapter.listOfItems =data
+        languageAdapter.listOfItems = data
     }
 
     override fun onStop() {

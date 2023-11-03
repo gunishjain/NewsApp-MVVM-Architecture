@@ -13,14 +13,17 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.databinding.ActivitySearchNewsBinding
-import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesAdapter
-import kotlinx.coroutines.*
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchNewsActivity : BaseActivity<SearchNewsViewModel,ActivitySearchNewsBinding>() {
+@AndroidEntryPoint
+class SearchNewsActivity : BaseActivity<SearchNewsViewModel, ActivitySearchNewsBinding>(
+    SearchNewsViewModel::class.java
+) {
 
     companion object {
         fun getStartIntent(context: Context): Intent {
@@ -31,10 +34,6 @@ class SearchNewsActivity : BaseActivity<SearchNewsViewModel,ActivitySearchNewsBi
     @Inject
     lateinit var searchNewsAdapter: TopHeadlinesAdapter
 
-    override fun injectDependencies(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
-
     override fun getViewBinding(): ActivitySearchNewsBinding {
         return ActivitySearchNewsBinding.inflate(layoutInflater)
     }
@@ -42,30 +41,30 @@ class SearchNewsActivity : BaseActivity<SearchNewsViewModel,ActivitySearchNewsBi
 
     override fun setupUI() {
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-            adapter=searchNewsAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = searchNewsAdapter
         }
 
-        searchNewsAdapter.itemClickListener= {
+        searchNewsAdapter.itemClickListener = {
             val builder = CustomTabsIntent.Builder()
             val customTabsIntent = builder.build()
             customTabsIntent.launchUrl(this, Uri.parse(it.url))
         }
 
 
-       binding.searchBar.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
-           android.widget.SearchView.OnQueryTextListener {
-           override fun onQueryTextSubmit(query: String?): Boolean {
-               return true
-           }
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
 
-           override fun onQueryTextChange(newText: String?): Boolean {
-               if (newText != null) {
-                   viewModel.onQuerySearch(newText)
-               }
-               return true
-           }
-       })
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    viewModel.onQuerySearch(newText)
+                }
+                return true
+            }
+        })
 
     }
 
@@ -73,7 +72,7 @@ class SearchNewsActivity : BaseActivity<SearchNewsViewModel,ActivitySearchNewsBi
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {
-                    when(it) {
+                    when (it) {
                         is UiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             renderList(it.data)
@@ -88,7 +87,8 @@ class SearchNewsActivity : BaseActivity<SearchNewsViewModel,ActivitySearchNewsBi
                         }
                         is UiState.Error -> {
                             binding.progressBar.visibility = View.GONE
-                            Toast.makeText(this@SearchNewsActivity,it.message, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@SearchNewsActivity, it.message, Toast.LENGTH_LONG)
+                                .show()
                         }
 
                     }

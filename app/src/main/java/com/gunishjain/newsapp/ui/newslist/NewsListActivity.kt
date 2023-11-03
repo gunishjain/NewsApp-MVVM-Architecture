@@ -13,15 +13,17 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.databinding.ActivityNewsListBinding
-import com.gunishjain.newsapp.di.component.ActivityComponent
 import com.gunishjain.newsapp.ui.base.BaseActivity
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class NewsListActivity : BaseActivity<NewsListViewModel, ActivityNewsListBinding>() {
+@AndroidEntryPoint
+class NewsListActivity : BaseActivity<NewsListViewModel, ActivityNewsListBinding>
+    (NewsListViewModel::class.java) {
 
     companion object {
         const val COUNTRY = "COUNTRY"
@@ -46,10 +48,6 @@ class NewsListActivity : BaseActivity<NewsListViewModel, ActivityNewsListBinding
 
     @Inject
     lateinit var newsListAdapter: TopHeadlinesAdapter
-
-    override fun injectDependencies(activityComponent: ActivityComponent) {
-        activityComponent.inject(this)
-    }
 
     override fun getViewBinding(): ActivityNewsListBinding {
         return ActivityNewsListBinding.inflate(layoutInflater)
@@ -84,7 +82,7 @@ class NewsListActivity : BaseActivity<NewsListViewModel, ActivityNewsListBinding
             adapter = newsListAdapter
         }
 
-        newsListAdapter.itemClickListener= {
+        newsListAdapter.itemClickListener = {
             val builder = CustomTabsIntent.Builder()
             val customTabsIntent = builder.build()
             customTabsIntent.launchUrl(this, Uri.parse(it.url))

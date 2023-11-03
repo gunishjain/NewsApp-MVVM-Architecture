@@ -7,15 +7,19 @@ import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.AppConstant.DEBOUNCE_TIMEOUT
 import com.gunishjain.newsapp.utils.AppConstant.MIN_SEARCH_CHAR
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchNewsViewModel(private val newsRepository: NewsRepository) : BaseViewModel() {
+@HiltViewModel
+class SearchNewsViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+    BaseViewModel() {
 
     private val searchText = MutableStateFlow("")
     private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Success(emptyList()))
-    val uiState : StateFlow<UiState<List<Article>>> = _uiState
+    val uiState: StateFlow<UiState<List<Article>>> = _uiState
 
     init {
         createNewsFlow()
@@ -35,7 +39,7 @@ class SearchNewsViewModel(private val newsRepository: NewsRepository) : BaseView
                 .flatMapLatest {
                     _uiState.value = UiState.Loading
                     return@flatMapLatest newsRepository.getSearchResult(it)
-                        .catch {e->
+                        .catch { e ->
                             _uiState.value = UiState.Error(e.toString())
                         }
                 }
@@ -45,6 +49,7 @@ class SearchNewsViewModel(private val newsRepository: NewsRepository) : BaseView
                 }
         }
     }
+
     fun onQuerySearch(query: String) {
         searchText.value = query
     }

@@ -6,91 +6,91 @@ import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
-import kotlinx.coroutines.flow.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class NewsListViewModel(private val newsRepository: NewsRepository) : BaseViewModel(){
+@HiltViewModel
+class NewsListViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+    BaseViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
-    val uiState : StateFlow<UiState<List<Article>>> = _uiState
+    val uiState: StateFlow<UiState<List<Article>>> = _uiState
 
-     fun fetchNewsOnSrc(sourceId: String){
+    fun fetchNewsOnSrc(sourceId: String) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             newsRepository.getNewsEverything(sourceId)
-                .catch {e->
-                    _uiState.value=UiState.Error(e.toString())
+                .catch { e ->
+                    _uiState.value = UiState.Error(e.toString())
                 }.collect {
-                    _uiState.value= UiState.Success(it)
+                    _uiState.value = UiState.Success(it)
                 }
         }
     }
 
-    fun fetchNewsOnCountry(countryId: List<String>){
+    fun fetchNewsOnCountry(countryId: List<String>) {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
-            if(countryId.size==1){
+            if (countryId.size == 1) {
                 newsRepository.getNewsCountry(countryId[0])
-                    .catch {e->
-                        _uiState.value=UiState.Error(e.toString())
+                    .catch { e ->
+                        _uiState.value = UiState.Error(e.toString())
                     }.collect {
-                        _uiState.value= UiState.Success(it)
+                        _uiState.value = UiState.Success(it)
                     }
             } else {
                 val countryIdOne = countryId[0]
                 val countryIdTwo = countryId[1]
 
                 newsRepository.getNewsCountry(countryIdOne)
-                    .zip(newsRepository.getNewsCountry(countryIdTwo)){ articlesOne,articlesTwo->
+                    .zip(newsRepository.getNewsCountry(countryIdTwo)) { articlesOne, articlesTwo ->
 
                         val allArticlesFromApi = mutableListOf<Article>()
                         allArticlesFromApi.addAll(articlesOne)
                         allArticlesFromApi.addAll(articlesTwo)
 
                         return@zip allArticlesFromApi.shuffled()
-                    }.catch {e->
-                        _uiState.value=UiState.Error(e.toString())
+                    }.catch { e ->
+                        _uiState.value = UiState.Error(e.toString())
                     }.collect {
-                        _uiState.value= UiState.Success(it)
-                        Log.d("GUNISH",it.size.toString())
+                        _uiState.value = UiState.Success(it)
+                        Log.d("GUNISH", it.size.toString())
                     }
             }
-
-//            newsRepository.getNewsCountry(countryId)
-//                .catch {e->
-//                    _uiState.value=UiState.Error(e.toString())
-//                }.collect {
-//                    _uiState.value= UiState.Success(it)
-//                }
         }
     }
 
-    fun fetchNewsOnLanguage(languageId: List<String>){
+    fun fetchNewsOnLanguage(languageId: List<String>) {
         viewModelScope.launch {
-            _uiState.value=UiState.Loading
-            if(languageId.size==1){
+            _uiState.value = UiState.Loading
+            if (languageId.size == 1) {
                 newsRepository.getNewsLanguage(languageId[0])
-                    .catch {e->
-                        _uiState.value=UiState.Error(e.toString())
+                    .catch { e ->
+                        _uiState.value = UiState.Error(e.toString())
                     }.collect {
-                        _uiState.value= UiState.Success(it)
+                        _uiState.value = UiState.Success(it)
                     }
             } else {
                 val languageIdOne = languageId[0]
                 val languageIdTwo = languageId[1]
 
                 newsRepository.getNewsLanguage(languageIdOne)
-                    .zip(newsRepository.getNewsLanguage(languageIdTwo)){ articlesOne,articlesTwo->
+                    .zip(newsRepository.getNewsLanguage(languageIdTwo)) { articlesOne, articlesTwo ->
 
                         val allArticlesFromApi = mutableListOf<Article>()
                         allArticlesFromApi.addAll(articlesOne)
                         allArticlesFromApi.addAll(articlesTwo)
 
                         return@zip allArticlesFromApi.shuffled()
-                    }.catch {e->
-                        _uiState.value=UiState.Error(e.toString())
+                    }.catch { e ->
+                        _uiState.value = UiState.Error(e.toString())
                     }.collect {
-                        _uiState.value= UiState.Success(it)
+                        _uiState.value = UiState.Success(it)
                     }
             }
 

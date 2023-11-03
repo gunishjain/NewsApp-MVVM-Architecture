@@ -1,35 +1,27 @@
 package com.gunishjain.newsapp.di.module
 
-import android.content.Context
-import com.gunishjain.newsapp.NewsApplication
-import com.gunishjain.newsapp.data.api.NetworkService
-import com.gunishjain.newsapp.data.repository.NewsLocalRepository
-import com.gunishjain.newsapp.data.repository.NewsRepository
-import com.gunishjain.newsapp.di.ApplicationContext
-import com.gunishjain.newsapp.di.BaseUrl
 import com.gunishjain.newsapp.data.api.ApiKeyInterceptor
+import com.gunishjain.newsapp.data.api.NetworkService
+import com.gunishjain.newsapp.di.BaseUrl
 import com.gunishjain.newsapp.di.NetworkApiKey
 import com.gunishjain.newsapp.utils.AppConstant
 import com.gunishjain.newsapp.utils.AppConstant.API_KEY
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule(private val application: NewsApplication) {
-
-    @ApplicationContext
-    @Provides
-    fun provideContext() : Context {
-        return application
-    }
+@InstallIn(SingletonComponent::class)
+class ApplicationModule {
 
     @BaseUrl
     @Provides
-    fun provideBaseUrl() : String = AppConstant.BASE_URL
+    fun provideBaseUrl(): String = AppConstant.BASE_URL
 
     @NetworkApiKey
     @Provides
@@ -37,7 +29,7 @@ class ApplicationModule(private val application: NewsApplication) {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory() : GsonConverterFactory = GsonConverterFactory.create()
+    fun provideGsonConverterFactory(): GsonConverterFactory = GsonConverterFactory.create()
 
     @Provides
     @Singleton
@@ -56,7 +48,7 @@ class ApplicationModule(private val application: NewsApplication) {
         @BaseUrl baseUrl: String,
         okHttpClient: OkHttpClient,
         gsonConverterFactory: GsonConverterFactory
-    ) :NetworkService {
+    ): NetworkService {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
@@ -64,18 +56,6 @@ class ApplicationModule(private val application: NewsApplication) {
             .build()
             .create(NetworkService::class.java)
 
-    }
-
-    @Provides
-    @Singleton
-    fun provideRepository(networkService: NetworkService) : NewsRepository {
-        return NewsRepository(networkService)
-    }
-
-    @Provides
-    @Singleton
-    fun provideLocalRepository() : NewsLocalRepository {
-        return NewsLocalRepository()
     }
 
 }
