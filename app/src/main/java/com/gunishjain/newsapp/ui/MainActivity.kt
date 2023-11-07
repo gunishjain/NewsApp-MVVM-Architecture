@@ -1,46 +1,24 @@
 package com.gunishjain.newsapp.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.gunishjain.newsapp.databinding.ActivityMainBinding
-import com.gunishjain.newsapp.ui.search.SearchNewsActivity
-import com.gunishjain.newsapp.ui.selections.CountrySelectionActivity
-import com.gunishjain.newsapp.ui.selections.LanguageSelectionActivity
-import com.gunishjain.newsapp.ui.sources.NewsSourceActivity
-import com.gunishjain.newsapp.ui.topheadlines.TopHeadlinesActivity
-import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.gunishjain.newsapp.navigation.SetupNavGraph
+import com.gunishjain.newsapp.ui.theme.NewsAppTheme
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        binding.apply {
-
-            topHeadlines.setOnClickListener {
-                startActivity(TopHeadlinesActivity.getStartIntent(this@MainActivity, COUNTRY))
+        setContent {
+            NewsAppTheme {
+                navController = rememberNavController()
+                SetupNavGraph(navController = navController)
             }
-
-            newsSrc.setOnClickListener {
-                startActivity(NewsSourceActivity.getStartIntent(this@MainActivity))
-            }
-
-            countries.setOnClickListener {
-                startActivity(CountrySelectionActivity.getStartIntent(this@MainActivity))
-            }
-
-            lang.setOnClickListener {
-                startActivity(LanguageSelectionActivity.getStartIntent(this@MainActivity))
-            }
-
-            search.setOnClickListener {
-                startActivity(SearchNewsActivity.getStartIntent(this@MainActivity))
-            }
-
         }
 
     }
