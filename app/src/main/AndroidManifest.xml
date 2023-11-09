@@ -12,7 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.NewsAppMVVMArchitecture"
+        android:theme="@style/Theme.NewsApp"
         tools:targetApi="31">
         <activity
             android:name=".ui.search.SearchNewsActivity"
