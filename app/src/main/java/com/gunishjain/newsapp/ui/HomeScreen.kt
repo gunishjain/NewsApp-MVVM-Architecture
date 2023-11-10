@@ -30,7 +30,9 @@ fun HomeScreen(
             }) {
             Text("TOP HEADLINES")
         }
-        OutlinedButton(onClick = { }) {
+        OutlinedButton(onClick = {
+            navController.navigate(route = Screen.NewsSource.route)
+        }) {
             Text("NEWS SOURCES")
         }
         OutlinedButton(onClick = { }) {

@@ -9,6 +9,11 @@ sealed class Screen(val route: String) {
 
     }
     object NewsSource: Screen(route="newssource")
+    object NewsList: Screen(route="newslist/{sourceId}"){
+        fun passSource(sourceId: String): String {
+            return "newslist/$sourceId"
+        }
+    }
     object Countries: Screen(route="countries")
     object Languages: Screen(route="languages")
     object SearchNews: Screen(route="searchnews")

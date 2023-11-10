@@ -1,4 +1,4 @@
-package com.gunishjain.newsapp.ui.topheadlines
+package com.gunishjain.newsapp.ui.newslist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -15,25 +15,25 @@ import com.gunishjain.newsapp.ui.base.ShowToast
 import com.gunishjain.newsapp.ui.base.UiState
 
 @Composable
-fun TopHeadlineRoute(
+fun NewsListRoute(
     onNewsClick: (url: String) -> Unit,
-    viewModel: TopHeadlinesViewModel = hiltViewModel(),
-    countryId: String
+    viewModel: NewsListViewModel = hiltViewModel(),
+    sourceId: String
 ) {
     LaunchedEffect(Unit, block = {
-        viewModel.fetchNews(countryId)
+        viewModel.fetchNewsOnSrc(sourceId)
     })
     val articles = viewModel.uiState.collectAsStateWithLifecycle()
     val uiState = articles.value
 
     Column(modifier = Modifier.padding(4.dp)) {
-        TopHeadLineScreen(uiState, onNewsClick)
+        NewsListScreen(uiState, onNewsClick)
     }
 
 }
 
 @Composable
-fun TopHeadLineScreen(uiState: UiState<List<Article>>, onNewsClick: (url: String) -> Unit) {
+fun NewsListScreen(uiState: UiState<List<Article>>, onNewsClick: (url: String) -> Unit) {
 
     when (uiState) {
         is UiState.Success -> {
