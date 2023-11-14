@@ -34,7 +34,7 @@ fun NewsSourceRoute(
 
     Column(modifier = Modifier.padding(4.dp)) {
         NewsSourceScreen(uiState, onSourceClick = { sourceId ->
-            navController.navigate(route = Screen.NewsList.passSource(sourceId))
+            navController.navigate(route = Screen.NewsList.passData(sourceId = sourceId))
         })
     }
 

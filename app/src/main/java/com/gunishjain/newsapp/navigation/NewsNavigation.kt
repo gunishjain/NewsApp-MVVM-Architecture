@@ -2,7 +2,6 @@ package com.gunishjain.newsapp.navigation
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -13,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.gunishjain.newsapp.ui.HomeScreen
 import com.gunishjain.newsapp.ui.newslist.NewsListRoute
+import com.gunishjain.newsapp.ui.selections.CountrySelectionRoute
+import com.gunishjain.newsapp.ui.selections.LanguageSelectionRoute
 import com.gunishjain.newsapp.ui.sources.NewsSourceRoute
 import com.gunishjain.newsapp.ui.topheadlines.TopHeadlineRoute
 
@@ -43,20 +44,49 @@ fun SetupNavGraph(
             }, countryId = countryId)
         }
 
-        composable(route=Screen.NewsSource.route){
+        composable(route = Screen.NewsSource.route) {
             NewsSourceRoute(navController)
         }
 
-        composable(route=Screen.NewsList.route,
-                    arguments = listOf(navArgument("sourceId"){
-                        type = NavType.StringType
-                    })
-            ) {it->
-            val sourceId=it.arguments?.getString("sourceId").toString()
-            NewsListRoute(onNewsClick ={
+        composable(route = Screen.NewsList.route,
+            arguments = listOf(
+                navArgument("sourceId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+                navArgument("countryId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+
+                },
+                navArgument("languageId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+
+                }
+            )
+        ) { it ->
+            val sourceId = it.arguments?.getString("sourceId").toString()
+            val countryId = it.arguments?.getString("countryId").toString()
+            val languageId = it.arguments?.getString("languageId").toString()
+
+            NewsListRoute(onNewsClick = {
                 openCustomChromeTab(context, it)
-            } , sourceId =sourceId )
+            }, sourceId = sourceId, countryId = countryId, languageId = languageId)
         }
+
+        composable(
+            route = Screen.Countries.route
+        ) {
+            CountrySelectionRoute(navController)
+        }
+
+        composable(
+            route = Screen.Languages.route
+        ) {
+            LanguageSelectionRoute(navController)
+        }
+
     }
 }
 

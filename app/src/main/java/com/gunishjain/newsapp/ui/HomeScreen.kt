@@ -35,10 +35,14 @@ fun HomeScreen(
         }) {
             Text("NEWS SOURCES")
         }
-        OutlinedButton(onClick = { }) {
+        OutlinedButton(onClick = {
+            navController.navigate(route = Screen.Countries.route)
+        }) {
             Text("COUNTRIES")
         }
-        OutlinedButton(onClick = { }) {
+        OutlinedButton(onClick = {
+            navController.navigate(route = Screen.Languages.route)
+        }) {
             Text("LANGUAGES")
         }
         OutlinedButton(onClick = { }) {

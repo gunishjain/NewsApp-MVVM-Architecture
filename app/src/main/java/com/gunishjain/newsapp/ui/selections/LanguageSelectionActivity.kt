@@ -57,7 +57,7 @@ class LanguageSelectionActivity :
         var selectedLanguages = languageAdapter.getSelectedItems()
         if (selectedLanguages.size in 1..2) {
             // Create an intent and pass the selected language IDs to the NewsListActivity
-            val languageIds = selectedLanguages.map { it.languageId }
+            val languageIds = selectedLanguages.map { it.id }
             startActivity(NewsListActivity.getStartIntent(this, languages = languageIds))
         } else {
             Toast.makeText(
@@ -72,7 +72,7 @@ class LanguageSelectionActivity :
         languageAdapter.expressionViewHolderBinding = { eachItem, viewBinding ->
 
             val view = viewBinding as SourceItemLayoutBinding
-            view.tvSrc.text = eachItem.languageName
+            view.tvSrc.text = eachItem.name
         }
 
         languageAdapter.expressionOnCreateViewHolder = { viewGroup ->

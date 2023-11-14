@@ -1,6 +1,10 @@
 package com.gunishjain.newsapp.data.model
 
 data class Language(
-    val languageId: String? = null,
-    val languageName: String = ""
+    val id: String? = null,
+    val name: String = "",
+)
+
+data class LanguageState(
+    val selectedLanguages: List<Language> = emptyList()
 )

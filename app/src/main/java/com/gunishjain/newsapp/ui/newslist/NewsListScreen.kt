@@ -1,5 +1,6 @@
 package com.gunishjain.newsapp.ui.newslist
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -18,10 +19,24 @@ import com.gunishjain.newsapp.ui.base.UiState
 fun NewsListRoute(
     onNewsClick: (url: String) -> Unit,
     viewModel: NewsListViewModel = hiltViewModel(),
-    sourceId: String
+    sourceId: String? = null,
+    countryId: String? = null,
+    languageId: String? = null
 ) {
     LaunchedEffect(Unit, block = {
-        viewModel.fetchNewsOnSrc(sourceId)
+        if (!countryId.isNullOrEmpty()) {
+            val countryIdList: List<String> = countryId.split(",")
+            viewModel.fetchNewsOnCountry(countryIdList)
+            Log.d("newslist", countryIdList.toString())
+
+        } else if (!languageId.isNullOrEmpty()) {
+            val languageIdList: List<String> = languageId.split(",")
+            viewModel.fetchNewsOnLanguage(languageIdList)
+            Log.d("newslist-lang", languageIdList.toString())
+        } else {
+            Log.d("newslist", "here source")
+            viewModel.fetchNewsOnSrc(sourceId!!)
+        }
     })
     val articles = viewModel.uiState.collectAsStateWithLifecycle()
     val uiState = articles.value
