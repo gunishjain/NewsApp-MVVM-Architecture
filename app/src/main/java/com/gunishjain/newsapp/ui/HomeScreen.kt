@@ -45,7 +45,9 @@ fun HomeScreen(
         }) {
             Text("LANGUAGES")
         }
-        OutlinedButton(onClick = { }) {
+        OutlinedButton(onClick = {
+            navController.navigate(route = Screen.SearchNews.route)
+        }) {
             Text("SEARCH NEWS")
         }
 

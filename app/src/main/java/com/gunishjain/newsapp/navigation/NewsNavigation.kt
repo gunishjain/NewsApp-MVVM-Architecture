@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.gunishjain.newsapp.ui.HomeScreen
 import com.gunishjain.newsapp.ui.newslist.NewsListRoute
+import com.gunishjain.newsapp.ui.search.SearchScreenRoute
 import com.gunishjain.newsapp.ui.selections.CountrySelectionRoute
 import com.gunishjain.newsapp.ui.selections.LanguageSelectionRoute
 import com.gunishjain.newsapp.ui.sources.NewsSourceRoute
@@ -85,6 +86,14 @@ fun SetupNavGraph(
             route = Screen.Languages.route
         ) {
             LanguageSelectionRoute(navController)
+        }
+
+        composable(
+            route = Screen.SearchNews.route
+        ) {
+            SearchScreenRoute(onNewsClick = {
+                openCustomChromeTab(context, it)
+            })
         }
 
     }
