@@ -8,12 +8,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.ui.base.ArticleList
 import com.gunishjain.newsapp.ui.base.ShowProgressBar
 import com.gunishjain.newsapp.ui.base.ShowToast
-import com.gunishjain.newsapp.ui.base.UiState
 
 @Composable
 fun NewsListRoute(
@@ -27,40 +28,47 @@ fun NewsListRoute(
         if (!countryId.isNullOrEmpty()) {
             val countryIdList: List<String> = countryId.split(",")
             viewModel.fetchNewsOnCountry(countryIdList)
-            Log.d("newslist", countryIdList.toString())
-
         } else if (!languageId.isNullOrEmpty()) {
             val languageIdList: List<String> = languageId.split(",")
-            viewModel.fetchNewsOnLanguage(languageIdList)
-            Log.d("newslist-lang", languageIdList.toString())
+//            viewModel.fetchNewsOnLanguage(languageIdList)
+            Log.d("language-nl", languageIdList.toString())
         } else {
-            Log.d("newslist", "here source")
             viewModel.fetchNewsOnSrc(sourceId!!)
         }
     })
-    val articles = viewModel.uiState.collectAsStateWithLifecycle()
-    val uiState = articles.value
+
+    val articles = viewModel.uiState.collectAsLazyPagingItems()
 
     Column(modifier = Modifier.padding(4.dp)) {
-        NewsListScreen(uiState, onNewsClick)
+        NewsListScreen(articles, onNewsClick)
     }
 
 }
 
 @Composable
-fun NewsListScreen(uiState: UiState<List<Article>>, onNewsClick: (url: String) -> Unit) {
+fun NewsListScreen(uiState: LazyPagingItems<Article>, onNewsClick: (url: String) -> Unit) {
 
-    when (uiState) {
-        is UiState.Success -> {
-            ArticleList(uiState.data, onNewsClick)
-        }
+    ArticleList(uiState, onNewsClick)
+    uiState.apply {
+        when {
+            loadState.refresh is LoadState.Loading -> {
+                ShowProgressBar()
+            }
 
-        is UiState.Loading -> {
-            ShowProgressBar()
-        }
+            loadState.refresh is LoadState.Error -> {
+                val error = uiState.loadState.refresh as LoadState.Error
+                ShowToast(error.error.localizedMessage!!)
+            }
 
-        is UiState.Error -> {
-            ShowToast(uiState.message)
+            loadState.append is LoadState.Loading -> {
+                ShowProgressBar()
+            }
+
+            loadState.append is LoadState.Error -> {
+                val error = uiState.loadState.append as LoadState.Error
+                ShowToast(error.error.localizedMessage!!)
+            }
         }
     }
+
 }

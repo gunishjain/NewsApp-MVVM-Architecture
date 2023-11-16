@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.model.Source
@@ -36,10 +37,10 @@ fun ShowToast(text: String) {
 
 
 @Composable
-fun ArticleList(articles: List<Article>, onNewsClick: (url: String) -> Unit) {
+fun ArticleList(articles: LazyPagingItems<Article>, onNewsClick: (url: String) -> Unit) {
     LazyColumn {
-        items(articles.size) { index ->
-            Article(article = articles[index], onNewsClick = onNewsClick)
+        items(articles.itemCount) { index ->
+            Article(article = articles[index]!!, onNewsClick = onNewsClick)
         }
     }
 }

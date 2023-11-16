@@ -7,4 +7,6 @@ object AppConstant {
     const val BASE_URL= "https://newsapi.org/v2/"
     const val DEBOUNCE_TIMEOUT = 300L
     const val MIN_SEARCH_CHAR = 3
+    const val INITIAL_PAGE = 1
+    const val PAGE_SIZE = 10
 }

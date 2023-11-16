@@ -1,10 +1,10 @@
 package com.gunishjain.newsapp.ui.search
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel
-import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.AppConstant.DEBOUNCE_TIMEOUT
 import com.gunishjain.newsapp.utils.AppConstant.MIN_SEARCH_CHAR
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +18,8 @@ class SearchNewsViewModel @Inject constructor(private val newsRepository: NewsRe
     BaseViewModel() {
 
     private val searchText = MutableStateFlow("")
-    private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Success(emptyList()))
-    val uiState: StateFlow<UiState<List<Article>>> = _uiState
+    private val _uiState = MutableStateFlow<PagingData<Article>>(value = PagingData.empty())
+    val uiState: StateFlow<PagingData<Article>> = _uiState
 
     init {
         createNewsFlow()
@@ -32,20 +32,16 @@ class SearchNewsViewModel @Inject constructor(private val newsRepository: NewsRe
                     if (it.isNotEmpty() && it.length >= MIN_SEARCH_CHAR) {
                         return@filter true
                     } else {
-                        _uiState.value = UiState.Success(emptyList())
+                        _uiState.value = PagingData.empty()
                         return@filter false
                     }
                 }.distinctUntilChanged()
                 .flatMapLatest {
-                    _uiState.value = UiState.Loading
                     return@flatMapLatest newsRepository.getSearchResult(it)
-                        .catch { e ->
-                            _uiState.value = UiState.Error(e.toString())
-                        }
                 }
                 .flowOn(Dispatchers.IO)
                 .collect {
-                    _uiState.value = UiState.Success(it)
+                    _uiState.value = it
                 }
         }
     }

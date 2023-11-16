@@ -1,6 +1,7 @@
 package com.gunishjain.newsapp.ui.topheadlines
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel
@@ -16,17 +17,30 @@ import javax.inject.Inject
 class TopHeadlinesViewModel @Inject constructor(private val newsRepository: NewsRepository) :
     BaseViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<Article>>> = _uiState
+//    private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
+//    val uiState: StateFlow<UiState<List<Article>>> = _uiState
 
-    fun fetchNews(country: String) {
+    private val _uiState = MutableStateFlow<PagingData<Article>>(value = PagingData.empty())
+
+    val uiState: StateFlow<PagingData<Article>> = _uiState
+
+//    fun fetchNews(country: String) {
+//        viewModelScope.launch {
+//            _uiState.value = UiState.Loading
+//            newsRepository.getTopHeadlines(country)
+//                .catch { e ->
+//                    _uiState.value = UiState.Error(e.toString())
+//                }.collect {
+//                    _uiState.value = UiState.Success(it)
+//                }
+//        }
+//    }
+
+     fun fetchNews(countryId: String) {
         viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            newsRepository.getTopHeadlines(country)
-                .catch { e ->
-                    _uiState.value = UiState.Error(e.toString())
-                }.collect {
-                    _uiState.value = UiState.Success(it)
+            newsRepository.getTopHeadlines(countryId)
+                .collect {
+                    _uiState.value = it
                 }
         }
     }
