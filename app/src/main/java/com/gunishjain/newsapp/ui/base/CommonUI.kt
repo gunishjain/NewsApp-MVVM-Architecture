@@ -1,5 +1,6 @@
 package com.gunishjain.newsapp.ui.base
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

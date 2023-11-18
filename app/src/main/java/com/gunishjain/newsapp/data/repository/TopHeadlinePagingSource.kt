@@ -8,40 +8,18 @@ import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
 import com.gunishjain.newsapp.utils.AppConstant.INITIAL_PAGE
 import com.gunishjain.newsapp.utils.AppConstant.PAGE_SIZE
 
-
-class NewsPagingSource(
-    private val networkService: NetworkService,
-    private val sourceId: String? = null,
-    private val countryId: String? = null,
-    private val languageId: String? = null,
-    private val query: String? = null,
-) :
+class TopHeadlinePagingSource(private val networkService: NetworkService) :
     PagingSource<Int, Article>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
         return try {
             val page = params.key ?: INITIAL_PAGE
-            var response = networkService.getTopHeadlines(
+
+            val response = networkService.getTopHeadlines(
                 country = COUNTRY,
                 page = page,
                 pageSize = PAGE_SIZE
             )
-
-            if (!countryId.isNullOrEmpty()) {
-                response =
-                    networkService.getNewsCountry(countryId, page = page, pageSize = PAGE_SIZE)
-
-            } else if (!languageId.isNullOrEmpty()) {
-                response =
-                    networkService.getNewsLanguage(languageId, page = page, pageSize = PAGE_SIZE)
-
-            } else if (!sourceId.isNullOrEmpty()) {
-                response =
-                    networkService.getNewsEverything(sourceId, page = page, pageSize = PAGE_SIZE)
-            } else if (!query.isNullOrEmpty()) {
-                response = networkService.getSearchResult(query)
-            }
-
 
             LoadResult.Page(
                 data = response.articles,
@@ -59,5 +37,4 @@ class NewsPagingSource(
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
         }
     }
-
 }

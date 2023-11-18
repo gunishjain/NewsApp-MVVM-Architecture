@@ -17,7 +17,6 @@ class NewsSourceViewModel @Inject constructor(private val newsRepository: NewsRe
     BaseViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Source>>>(UiState.Loading)
-
     val uiState: StateFlow<UiState<List<Source>>> = _uiState
 
     init {

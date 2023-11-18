@@ -16,29 +16,26 @@ import javax.inject.Singleton
 @Singleton
 class NewsRepository @Inject constructor(private val networkService: NetworkService) {
 
-    fun getTopHeadlines(countryId: String): Flow<PagingData<Article>> {
+    fun getTopHeadlines(): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
-                NewsPagingSource(networkService, countryId = countryId)
+                TopHeadlinePagingSource(networkService)
             }
         ).flow
     }
 
-
     fun getNewsEverything(sourceId: String): Flow<PagingData<Article>> {
-
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
-                NewsPagingSource(networkService, sourceId = sourceId)
+                SourceNewsPagingSource(networkService, sourceId = sourceId)
             }
         ).flow
-
     }
 
     fun getNewsSources(): Flow<List<Source>> {
@@ -49,30 +46,26 @@ class NewsRepository @Inject constructor(private val networkService: NetworkServ
         }
     }
 
-    fun getNewsCountry(countryId: String): Flow<PagingData<Article>> {
-
+    fun getNewsCountry(countryIdOne: String, countryIdTwo: String?): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
-                NewsPagingSource(networkService, countryId = countryId)
+                CountryNewsPagingSource(networkService, countryIdOne, countryIdTwo)
             }
         ).flow
-
     }
 
-    fun getNewsLanguage(languageId: String): Flow<PagingData<Article>> {
-
+    fun getNewsLanguage(languageIdOne: String, languageIdTwo: String?): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
-                NewsPagingSource(networkService, languageId = languageId)
+                LanguageNewsPagingSource(networkService, languageIdOne, languageIdTwo)
             }
         ).flow
-
     }
 
     fun getSearchResult(query: String): Flow<PagingData<Article>> {
@@ -81,9 +74,8 @@ class NewsRepository @Inject constructor(private val networkService: NetworkServ
                 pageSize = PAGE_SIZE
             ),
             pagingSourceFactory = {
-                NewsPagingSource(networkService, query = query)
+                SearchNewsPagingSource(networkService, query)
             }
         ).flow
-
     }
 }

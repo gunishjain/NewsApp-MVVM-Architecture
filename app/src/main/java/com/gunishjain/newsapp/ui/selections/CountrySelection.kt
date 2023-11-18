@@ -64,17 +64,11 @@ fun CountrySelectionRoute(
                 .padding(20.dp)
         ) {
             FloatingActionButton(
-
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    if (selectionState.selectedCountries.size == 2) {
-                        val countriesString =
-                            selectionState.selectedCountries.joinToString(",") { it.id.orEmpty() }
-                        navController.navigate(route = Screen.NewsList.passData(countryId = countriesString))
-
-                    } else {
-//                        ShowToast(text = "Please Select Two Countries")
-                    }
+                    val countriesString =
+                        selectionState.selectedCountries.joinToString(",") { it.id.orEmpty() }
+                    navController.navigate(route = Screen.NewsList.passData(countryId = countriesString))
                 }
             ) {
                 Text(text = "PROCEED")
@@ -154,7 +148,6 @@ fun CountryItem(item: Country, onItemClick: (Country) -> Unit, isSelected: Boole
                 )
             }
         }
-
     }
 
 }

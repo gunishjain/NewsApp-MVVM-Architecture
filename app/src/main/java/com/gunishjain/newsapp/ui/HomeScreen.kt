@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.gunishjain.newsapp.navigation.Screen
-import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
 
 
 @Composable
@@ -26,7 +25,7 @@ fun HomeScreen(
     ) {
         OutlinedButton(
             onClick = {
-                navController.navigate(route = Screen.TopHeadline.passCountry(COUNTRY))
+                navController.navigate(route = Screen.TopHeadline.route)
             }) {
             Text("TOP HEADLINES")
         }

@@ -1,6 +1,5 @@
 package com.gunishjain.newsapp.ui.newslist
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -25,13 +24,13 @@ fun NewsListRoute(
     languageId: String? = null
 ) {
     LaunchedEffect(Unit, block = {
+
         if (!countryId.isNullOrEmpty()) {
             val countryIdList: List<String> = countryId.split(",")
             viewModel.fetchNewsOnCountry(countryIdList)
         } else if (!languageId.isNullOrEmpty()) {
             val languageIdList: List<String> = languageId.split(",")
-//            viewModel.fetchNewsOnLanguage(languageIdList)
-            Log.d("language-nl", languageIdList.toString())
+            viewModel.fetchNewsOnLanguage(languageIdList)
         } else {
             viewModel.fetchNewsOnSrc(sourceId!!)
         }
@@ -49,6 +48,7 @@ fun NewsListRoute(
 fun NewsListScreen(uiState: LazyPagingItems<Article>, onNewsClick: (url: String) -> Unit) {
 
     ArticleList(uiState, onNewsClick)
+
     uiState.apply {
         when {
             loadState.refresh is LoadState.Loading -> {

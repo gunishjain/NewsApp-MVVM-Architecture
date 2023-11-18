@@ -34,15 +34,11 @@ fun SetupNavGraph(
         }
 
         composable(
-            route = Screen.TopHeadline.route,
-            arguments = listOf(navArgument("countryId") {
-                type = NavType.StringType
-            })
-        ) { it ->
-            val countryId = it.arguments?.getString("countryId").toString()
+            route = Screen.TopHeadline.route
+        ) {
             TopHeadlineRoute(onNewsClick = {
                 openCustomChromeTab(context, it)
-            }, countryId = countryId)
+            })
         }
 
         composable(route = Screen.NewsSource.route) {

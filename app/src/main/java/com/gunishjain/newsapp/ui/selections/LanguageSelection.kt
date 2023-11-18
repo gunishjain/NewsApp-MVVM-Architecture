@@ -67,14 +67,10 @@ fun LanguageSelectionRoute(
 
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    if (selectionState.selectedLanguages.size == 2) {
-                        val languageString =
-                            selectionState.selectedLanguages.joinToString(",") { it.id.orEmpty() }
-                        navController.navigate(route = Screen.NewsList.passData(languageId = languageString))
+                    val languageString =
+                        selectionState.selectedLanguages.joinToString(",") { it.id.orEmpty() }
+                    navController.navigate(route = Screen.NewsList.passData(languageId = languageString))
 
-                    } else {
-//                        ShowToast(text = "Please Select Two Countries")
-                    }
                 }
             ) {
                 Text(text = "PROCEED")
