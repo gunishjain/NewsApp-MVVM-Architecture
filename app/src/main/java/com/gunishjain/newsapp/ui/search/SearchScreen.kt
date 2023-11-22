@@ -9,7 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gunishjain.newsapp.ui.newslist.NewsListScreen
 
 
@@ -20,7 +20,8 @@ fun SearchScreenRoute(
     viewModel: SearchNewsViewModel = hiltViewModel(),
 ) {
 
-    val searchResult = viewModel.uiState.collectAsLazyPagingItems()
+    val searchResult = viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState = searchResult.value
     var text by remember { mutableStateOf("") }
     var active by remember { mutableStateOf(false) }
 
@@ -47,7 +48,7 @@ fun SearchScreenRoute(
                 )
             },
             content = {
-                NewsListScreen(searchResult, onNewsClick)
+                NewsListScreen(uiState, onNewsClick)
             },
             onActiveChange = {
                 active = it

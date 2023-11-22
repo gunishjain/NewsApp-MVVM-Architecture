@@ -1,40 +1,29 @@
 package com.gunishjain.newsapp.data.repository
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.gunishjain.newsapp.data.api.NetworkService
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.model.Source
-import com.gunishjain.newsapp.utils.AppConstant.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class NewsRepository @Inject constructor(private val networkService: NetworkService) {
 
-    fun getTopHeadlines(): Flow<PagingData<Article>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                TopHeadlinePagingSource(networkService)
-            }
-        ).flow
+    fun getTopHeadlines(country: String): Flow<List<Article>> {
+        return flow {
+            emit(networkService.getTopHeadlines(country))
+        }.map {
+            it.articles
+        }
     }
 
-    fun getNewsEverything(sourceId: String): Flow<PagingData<Article>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                SourceNewsPagingSource(networkService, sourceId = sourceId)
-            }
-        ).flow
+    fun getNewsEverything(sourceId: String): Flow<List<Article>> {
+        return flow {
+            emit(networkService.getNewsEverything(sourceId))
+        }.map {
+            it.articles
+        }
     }
 
     fun getNewsSources(): Flow<List<Source>> {
@@ -45,36 +34,27 @@ class NewsRepository @Inject constructor(private val networkService: NetworkServ
         }
     }
 
-    fun getNewsByCountry(countryIdOne: String, countryIdTwo: String?): Flow<PagingData<Article>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                CountryNewsPagingSource(networkService, countryIdOne, countryIdTwo)
-            }
-        ).flow
+    fun getNewsByCountry(countryId: String): Flow<List<Article>> {
+        return flow {
+            emit(networkService.getNewsCountry(countryId))
+        }.map {
+            it.articles
+        }
     }
 
-    fun getNewsByLanguage(languageIdOne: String, languageIdTwo: String?): Flow<PagingData<Article>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                LanguageNewsPagingSource(networkService, languageIdOne, languageIdTwo)
-            }
-        ).flow
+    fun getNewsByLanguage(languageId: String): Flow<List<Article>> {
+        return flow {
+            emit(networkService.getNewsLanguage(languageId))
+        }.map {
+            it.articles
+        }
     }
 
-    fun getSearchResult(query: String): Flow<PagingData<Article>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = PAGE_SIZE
-            ),
-            pagingSourceFactory = {
-                SearchNewsPagingSource(networkService, query)
-            }
-        ).flow
+    fun getSearchResult(query: String): Flow<List<Article>> {
+        return flow {
+            emit(networkService.getSearchResult(query))
+        }.map {
+            it.articles
+        }
     }
 }
