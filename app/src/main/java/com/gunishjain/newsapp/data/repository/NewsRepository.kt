@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class NewsRepository @Inject constructor(private val networkService: NetworkService) {
 
     fun getTopHeadlines(): Flow<PagingData<Article>> {
@@ -46,7 +45,7 @@ class NewsRepository @Inject constructor(private val networkService: NetworkServ
         }
     }
 
-    fun getNewsCountry(countryIdOne: String, countryIdTwo: String?): Flow<PagingData<Article>> {
+    fun getNewsByCountry(countryIdOne: String, countryIdTwo: String?): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE
@@ -57,7 +56,7 @@ class NewsRepository @Inject constructor(private val networkService: NetworkServ
         ).flow
     }
 
-    fun getNewsLanguage(languageIdOne: String, languageIdTwo: String?): Flow<PagingData<Article>> {
+    fun getNewsByLanguage(languageIdOne: String, languageIdTwo: String?): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE

@@ -27,12 +27,12 @@ fun NewsListRoute(
 
         if (!countryId.isNullOrEmpty()) {
             val countryIdList: List<String> = countryId.split(",")
-            viewModel.fetchNewsOnCountry(countryIdList)
+            viewModel.fetchNewsByCountry(countryIdList)
         } else if (!languageId.isNullOrEmpty()) {
             val languageIdList: List<String> = languageId.split(",")
-            viewModel.fetchNewsOnLanguage(languageIdList)
+            viewModel.fetchNewsByLanguage(languageIdList)
         } else {
-            viewModel.fetchNewsOnSrc(sourceId!!)
+            viewModel.fetchNewsBySrc(sourceId!!)
         }
     })
 

@@ -25,7 +25,7 @@ import com.gunishjain.newsapp.ui.base.UiState
 @Composable
 fun LanguageSelectionRoute(
     navController: NavController,
-    viewModel: SelectionsViewModel = hiltViewModel()
+    viewModel: LanguageSelectionViewModel = hiltViewModel()
 ) {
     val languages = viewModel.uiStateLanguage.collectAsStateWithLifecycle()
     var selectionState by remember { mutableStateOf(LanguageState()) }

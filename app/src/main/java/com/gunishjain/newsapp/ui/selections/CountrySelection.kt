@@ -25,7 +25,7 @@ import com.gunishjain.newsapp.ui.base.UiState
 @Composable
 fun CountrySelectionRoute(
     navController: NavController,
-    viewModel: SelectionsViewModel = hiltViewModel()
+    viewModel: CountrySelectionViewModel = hiltViewModel()
 ) {
     val countries = viewModel.uiStateCountry.collectAsStateWithLifecycle()
     var selectionState by remember { mutableStateOf(SelectionState()) }

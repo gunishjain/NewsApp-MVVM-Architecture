@@ -7,9 +7,7 @@ import com.gunishjain.newsapp.utils.languages
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class NewsLocalRepository @Inject constructor() {
 
     fun getCountries(): Flow<List<Country>> {
