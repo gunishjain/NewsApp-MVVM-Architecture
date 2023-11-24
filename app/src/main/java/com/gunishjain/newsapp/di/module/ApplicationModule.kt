@@ -6,6 +6,8 @@ import com.gunishjain.newsapp.di.BaseUrl
 import com.gunishjain.newsapp.di.NetworkApiKey
 import com.gunishjain.newsapp.utils.AppConstant
 import com.gunishjain.newsapp.utils.AppConstant.API_KEY
+import com.gunishjain.newsapp.utils.DefaultDispatcherProvider
+import com.gunishjain.newsapp.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,5 +59,9 @@ class ApplicationModule {
             .create(NetworkService::class.java)
 
     }
+
+    @Provides
+    @Singleton
+    fun provideDispatcherProvider(): DispatcherProvider = DefaultDispatcherProvider()
 
 }
