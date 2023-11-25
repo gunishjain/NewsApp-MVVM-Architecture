@@ -6,5 +6,6 @@
     <string name="lang">Languages</string>
     <string name="search">Search News</string>
     <string name="proceed">Proceed</string>
+    <string name="loading">Loading</string>
 
 </resources>

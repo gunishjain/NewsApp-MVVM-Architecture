@@ -23,8 +23,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        OutlinedButton(
-            onClick = {
+        OutlinedButton(onClick = {
                 navController.navigate(route = Screen.TopHeadline.route)
             }) {
             Text("TOP HEADLINES")

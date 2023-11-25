@@ -1,6 +1,5 @@
 package com.gunishjain.newsapp.ui.base
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,9 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.gunishjain.newsapp.R
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.model.Source
 
@@ -25,13 +27,31 @@ fun ShowProgressBar() {
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        val contentDesc = stringResource(R.string.loading)
+        CircularProgressIndicator(modifier = Modifier
+            .align(Alignment.Center)
+            .semantics {
+                contentDescription = contentDesc
+            })
     }
 }
 
 @Composable
 fun ShowToast(text: String) {
-    Toast.makeText(LocalContext.current, text, Toast.LENGTH_LONG).show()
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.Red,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(4.dp)
+        )
+    }
 }
 
 

@@ -7,18 +7,21 @@ import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.AppConstant.DEBOUNCE_TIMEOUT
 import com.gunishjain.newsapp.utils.AppConstant.MIN_SEARCH_CHAR
+import com.gunishjain.newsapp.utils.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchNewsViewModel @Inject constructor(private val newsRepository: NewsRepository) :
+class SearchNewsViewModel @Inject constructor(
+    private val newsRepository: NewsRepository,
+    private val dispatcherProvider: DispatcherProvider
+) :
     BaseViewModel() {
 
     private val searchText = MutableStateFlow("")
-    private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Success(emptyList()))
+    private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
     val uiState: StateFlow<UiState<List<Article>>> = _uiState
 
     init {
@@ -26,7 +29,7 @@ class SearchNewsViewModel @Inject constructor(private val newsRepository: NewsRe
     }
 
     private fun createNewsFlow() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherProvider.main) {
             searchText.debounce(DEBOUNCE_TIMEOUT)
                 .filter {
                     if (it.isNotEmpty() && it.length >= MIN_SEARCH_CHAR) {
@@ -43,7 +46,7 @@ class SearchNewsViewModel @Inject constructor(private val newsRepository: NewsRe
                             _uiState.value = UiState.Error(e.toString())
                         }
                 }
-                .flowOn(Dispatchers.IO)
+                .flowOn(dispatcherProvider.io)
                 .collect {
                     _uiState.value = UiState.Success(it)
                 }
