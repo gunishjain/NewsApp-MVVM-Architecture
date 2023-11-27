@@ -126,10 +126,10 @@ debugImplementation 'androidx.compose.ui:ui-test-manifest'
 ### Screenshots 
 
 <p align="center">
-<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/homescreen.png">
-<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/selectionscreen.png">
-<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/searchscreen.png">
-<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/newssources.png">
+<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/homescreen.png" width="200" height="400">
+<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/selectionscreen.png" width="200" height="400">
+<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/searchscreen.png" width="200" height="400">
+<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/newssources.png" width="200" height="400">
 </p>
 
 ### News App Demo
