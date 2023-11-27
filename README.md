@@ -43,14 +43,13 @@ A News Application that allows users to fetch news built by following MVVM Archi
   - [Turbine](https://github.com/cashapp/turbine/)
   
 ## Dependency Used:
-- Recycler View for listing
+- Jetpack Compose 
 ```
-implementation "androidx.recyclerview:recyclerview:1.3.1"
-
-```
-- Glide for image loading
-```
-implementation 'com.github.bumptech.glide:glide:4.15.1'
+implementation 'androidx.activity:activity-compose:1.3.1'
+implementation 'androidx.compose.ui:ui'
+implementation "androidx.compose.ui:ui:$compose_ui_version"
+implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
+implementation 'io.coil-kt:coil-compose:2.4.0'
 ```
 - Retrofit for networking
 ```
