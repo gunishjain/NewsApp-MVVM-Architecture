@@ -21,7 +21,7 @@ A News Application that allows users to fetch news built by following MVVM Archi
 > [!NOTE]
 > Compose UI is implemented in the compose-migration branch, the tests are implemented in the compose-without-pagination branch.
 
-<img src="https://github.com/gunishjain/WallpaperApp/blob/main/assets/MVVM-Arch.png" >
+<img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/MVVM-Arch.png">
 
 
 ## Features Implemented
@@ -121,7 +121,6 @@ debugImplementation 'androidx.compose.ui:ui-test-manifest'
             └───utils
                 NewsApplication.kt
 
-
 ```
 
 ### Screenshots 
@@ -135,9 +134,7 @@ debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
 ### News App Demo
 
-<p align="center">
-![](https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/instant-search.gif)
-![](https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/pagination.gif)
-</p>
+![](https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/instant-search.gif) | ![](https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/pagination.gif)
+
 
 
