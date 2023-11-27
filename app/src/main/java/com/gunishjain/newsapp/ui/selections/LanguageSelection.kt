@@ -11,7 +11,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -136,17 +138,21 @@ fun LanguageItem(item: Language, onItemClick: (Language) -> Unit, isSelected: Bo
             .clickable {
                 onItemClick(item)
             }
-            .padding(16.dp),
+            .padding(vertical = 23.dp, horizontal = 15.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = item.name)
+            Text(
+                text = item.name,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
             if (isSelected) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "Selected",
-                    tint = Color.Green,
-                    modifier = Modifier.size(15.dp)
+                    tint = Color.Blue,
+                    modifier = Modifier.size(25.dp)
                 )
             }
         }
