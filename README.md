@@ -19,7 +19,8 @@ A News Application that allows users to fetch news built by following MVVM Archi
 - UI Test
 
 > [!NOTE]
-> Compose UI is implemented in the compose-migration branch, the tests are implemented in the compose-without-pagination branch.
+> Compose UI is implemented in the [compose-migration](https://github.com/gunishjain/NewsApp-MVVM-Architecture/tree/compose-migration) branch, the tests are implemented in the [compose-without-pagination](https://github.com/gunishjain/NewsApp-MVVM-Architecture/tree/compose-without-pagination) branch.
+
 
 <img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/MVVM-Arch.png">
 
