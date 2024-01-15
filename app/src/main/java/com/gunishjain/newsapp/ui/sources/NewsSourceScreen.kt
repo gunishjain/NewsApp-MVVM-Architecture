@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.gunishjain.newsapp.data.model.Source
+import com.gunishjain.newsapp.data.model.ApiSource
 import com.gunishjain.newsapp.navigation.Screen
 import com.gunishjain.newsapp.ui.base.ShowProgressBar
 import com.gunishjain.newsapp.ui.base.ShowToast
@@ -39,7 +39,7 @@ fun NewsSourceRoute(
 }
 
 @Composable
-fun NewsSourceScreen(uiState: UiState<List<Source>>, onSourceClick: (source: String) -> Unit) {
+fun NewsSourceScreen(uiState: UiState<List<ApiSource>>, onSourceClick: (source: String) -> Unit) {
 
     when (uiState) {
         is UiState.Success -> {
@@ -58,16 +58,16 @@ fun NewsSourceScreen(uiState: UiState<List<Source>>, onSourceClick: (source: Str
 
 
 @Composable
-fun SourceList(sources: List<Source>, onSourceClick: (source: String) -> Unit) {
+fun SourceList(apiSources: List<ApiSource>, onSourceClick: (source: String) -> Unit) {
     LazyColumn {
-        items(sources.size) { index ->
-            Source(source = sources[index], onSourceClick = onSourceClick)
+        items(apiSources.size) { index ->
+            Source(apiSource = apiSources[index], onSourceClick = onSourceClick)
         }
     }
 }
 
 @Composable
-fun Source(source: Source, onSourceClick: (source: String) -> Unit) {
+fun Source(apiSource: ApiSource, onSourceClick: (source: String) -> Unit) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -77,11 +77,11 @@ fun Source(source: Source, onSourceClick: (source: String) -> Unit) {
             .padding(5.dp)
             .fillMaxWidth()
             .clickable {
-                source.id?.let { onSourceClick(it) }
+                apiSource.id?.let { onSourceClick(it) }
             }
     ) {
         Text(
-            text = source.name,
+            text = apiSource.name,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.fillMaxSize().wrapContentSize(Alignment.Center),

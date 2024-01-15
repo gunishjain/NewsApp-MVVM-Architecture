@@ -1,7 +1,7 @@
 package com.gunishjain.newsapp.ui.search
 
+import ApiArticle
 import androidx.lifecycle.viewModelScope
-import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
@@ -9,7 +9,14 @@ import com.gunishjain.newsapp.utils.AppConstant.DEBOUNCE_TIMEOUT
 import com.gunishjain.newsapp.utils.AppConstant.MIN_SEARCH_CHAR
 import com.gunishjain.newsapp.utils.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,8 +28,8 @@ class SearchNewsViewModel @Inject constructor(
     BaseViewModel() {
 
     private val searchText = MutableStateFlow("")
-    private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<Article>>> = _uiState
+    private val _uiState = MutableStateFlow<UiState<List<ApiArticle>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<ApiArticle>>> = _uiState
 
     init {
         createNewsFlow()

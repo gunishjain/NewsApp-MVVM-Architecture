@@ -1,11 +1,18 @@
 package com.gunishjain.newsapp.ui.topheadlines
 
+import ApiArticle
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.hasScrollToNodeAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performScrollToNode
 import com.gunishjain.newsapp.R
-import com.gunishjain.newsapp.data.model.Article
-import com.gunishjain.newsapp.data.model.Source
+import com.gunishjain.newsapp.data.local.entity.Article
+import com.gunishjain.newsapp.data.local.entity.Source
+import com.gunishjain.newsapp.data.model.ApiSource
 import com.gunishjain.newsapp.ui.base.UiState
 import org.junit.Rule
 import org.junit.Test
@@ -33,14 +40,14 @@ class TopHeadlineScreenTest {
     fun articles_whenUiStateIsSuccess_isShown() {
         composeTestRule.setContent {
             TopHeadLineScreen(
-                uiState = UiState.Success(testArticles),
+                uiState = UiState.Success(testApiArticles),
                 onNewsClick = {}
             )
         }
 
         composeTestRule
             .onNodeWithText(
-                testArticles[0].title,
+                testApiArticles[0].title,
                 substring = true
             )
             .assertExists()
@@ -49,14 +56,14 @@ class TopHeadlineScreenTest {
         composeTestRule.onNode(hasScrollToNodeAction())
             .performScrollToNode(
                 hasText(
-                    testArticles[5].title,
+                    testApiArticles[5].title,
                     substring = true
                 )
             )
 
         composeTestRule
             .onNodeWithText(
-                testArticles[5].title,
+                testApiArticles[5].title,
                 substring = true
             )
             .assertExists()
@@ -81,7 +88,7 @@ class TopHeadlineScreenTest {
 
 }
 
-private val testArticles = listOf(
+private val testApiArticles = listOf(
     Article(
         title = "title1",
         description = "description1",

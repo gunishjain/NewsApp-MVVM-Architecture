@@ -7,13 +7,11 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.gunishjain.newsapp.R
-import com.gunishjain.newsapp.data.model.Source
+import com.gunishjain.newsapp.data.model.ApiSource
 import com.gunishjain.newsapp.navigation.Screen
 import com.gunishjain.newsapp.navigation.SetupNavGraph
 import com.gunishjain.newsapp.ui.base.UiState
-import com.gunishjain.newsapp.ui.topheadlines.TopHeadLineScreen
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -41,14 +39,14 @@ class NewsSourceScreenTest {
     fun articles_whenUiStateIsSuccess_isShown() {
         composeTestRule.setContent {
             NewsSourceScreen(
-                uiState = UiState.Success(testSources),
+                uiState = UiState.Success(testApiSources),
                 onSourceClick = {}
             )
         }
 
         composeTestRule
             .onNodeWithText(
-                testSources[0].name,
+                testApiSources[0].name,
                 substring = true
             )
             .assertExists()
@@ -57,14 +55,14 @@ class NewsSourceScreenTest {
         composeTestRule.onNode(hasScrollToNodeAction())
             .performScrollToNode(
                 hasText(
-                    testSources[4].name,
+                    testApiSources[4].name,
                     substring = true
                 )
             )
 
         composeTestRule
             .onNodeWithText(
-                testSources[4].name,
+                testApiSources[4].name,
                 substring = true
             )
             .assertExists()
@@ -97,7 +95,7 @@ class NewsSourceScreenTest {
             navController.navigatorProvider.addNavigator(ComposeNavigator())
             SetupNavGraph(navController = navController)
             NewsSourceScreen(
-                uiState = UiState.Success(testSources),
+                uiState = UiState.Success(testApiSources),
                 onSourceClick = {}
             )
         }
@@ -110,24 +108,24 @@ class NewsSourceScreenTest {
 
 }
 
-private val testSources = listOf(
-    Source(
+private val testApiSources = listOf(
+    ApiSource(
         id = "id1",
         name = "name1"
     ),
-    Source(
+    ApiSource(
         id = "id2",
         name = "name2"
     ),
-    Source(
+    ApiSource(
         id = "id3",
         name = "name3"
     ),
-    Source(
+    ApiSource(
         id = "id4",
         name = "name4"
     ),
-    Source(
+    ApiSource(
         id = "id5",
         name = "name5"
     )

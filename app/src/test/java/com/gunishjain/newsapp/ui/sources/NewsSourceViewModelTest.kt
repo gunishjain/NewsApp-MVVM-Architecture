@@ -1,7 +1,7 @@
 package com.gunishjain.newsapp.ui.sources
 
 import app.cash.turbine.test
-import com.gunishjain.newsapp.data.model.Source
+import com.gunishjain.newsapp.data.model.ApiSource
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.DispatcherProvider
@@ -35,12 +35,12 @@ class NewsSourceViewModelTest {
     @Test
     fun fetchSources_whenRepositoryResponseSuccess_shouldSetSuccessUiState() {
         runTest {
-            doReturn(flowOf(emptyList<Source>()))
+            doReturn(flowOf(emptyList<ApiSource>()))
                 .`when`(newsRepository)
                 .getNewsSources()
             val viewModel = NewsSourceViewModel(newsRepository, dispatcherProvider)
             viewModel.uiState.test {
-                assertEquals(UiState.Success(emptyList<List<Source>>()), awaitItem())
+                assertEquals(UiState.Success(emptyList<List<ApiSource>>()), awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
             verify(newsRepository, times(1)).getNewsSources()
@@ -51,7 +51,7 @@ class NewsSourceViewModelTest {
     fun fetchSources_whenRepositoryResponseError_shouldSetErrorUiState() {
         runTest {
             val errorMessage = "Error Message For You"
-            doReturn(flow<List<Source>> {
+            doReturn(flow<List<ApiSource>> {
                 throw IllegalStateException(errorMessage)
             })
                 .`when`(newsRepository)

@@ -2,10 +2,10 @@ package com.gunishjain.newsapp.data.repository
 
 import app.cash.turbine.test
 import com.gunishjain.newsapp.data.api.NetworkService
-import com.gunishjain.newsapp.data.model.Article
+import com.gunishjain.newsapp.data.model.ApiArticle
 import com.gunishjain.newsapp.data.model.NewsResponse
 import com.gunishjain.newsapp.data.model.NewsSourceResponse
-import com.gunishjain.newsapp.data.model.Source
+import com.gunishjain.newsapp.data.model.ApiSource
 import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
 import com.gunishjain.newsapp.utils.AppConstant.LANGUAGE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,26 +35,26 @@ class NewsRepositoryTest {
     @Test
     fun getTopHeadlines_whenNetworkServiceResponseSuccess_shouldReturnSuccess() {
         runTest {
-            val source = Source(id = "sourceId", name = "sourceName")
-            val article = Article(
+            val apiSource = ApiSource(id = "sourceId", name = "sourceName")
+            val apiArticle = ApiArticle(
                 title = "title",
                 description = "description",
                 url = "url",
                 imageUrl = "urlToImage",
-                source = source
+                apiSource = apiSource
             )
 
-            val articles = mutableListOf<Article>()
-            articles.add(article)
+            val apiArticles = mutableListOf<ApiArticle>()
+            apiArticles.add(apiArticle)
 
             val topHeadlinesResponse = NewsResponse(
-                status = "ok", totalResults = 1, articles = articles
+                status = "ok", totalResults = 1, apiArticles = apiArticles
             )
 
             doReturn(topHeadlinesResponse).`when`(networkService).getTopHeadlines(COUNTRY)
 
             newsRepository.getTopHeadlines(COUNTRY).test {
-                assertEquals(topHeadlinesResponse.articles, awaitItem())
+                assertEquals(topHeadlinesResponse.apiArticles, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
 
@@ -82,26 +82,26 @@ class NewsRepositoryTest {
     @Test
     fun getNewsEverything_whenNetworkServiceResponseSuccess_shouldReturnSuccess() {
         runTest {
-            val source = Source(id = "sourceId", name = "sourceName")
-            val article = Article(
+            val apiSource = ApiSource(id = "sourceId", name = "sourceName")
+            val apiArticle = ApiArticle(
                 title = "title",
                 description = "description",
                 url = "url",
                 imageUrl = "urlToImage",
-                source = source
+                apiSource = apiSource
             )
 
-            val articles = mutableListOf<Article>()
-            articles.add(article)
+            val apiArticles = mutableListOf<ApiArticle>()
+            apiArticles.add(apiArticle)
 
             val newsEverythingResponse = NewsResponse(
-                status = "ok", totalResults = 1, articles = articles
+                status = "ok", totalResults = 1, apiArticles = apiArticles
             )
 
             doReturn(newsEverythingResponse).`when`(networkService).getNewsEverything("sourceId")
 
             newsRepository.getNewsEverything("sourceId").test {
-                assertEquals(newsEverythingResponse.articles, awaitItem())
+                assertEquals(newsEverythingResponse.apiArticles, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
 
@@ -129,19 +129,19 @@ class NewsRepositoryTest {
     @Test
     fun getNewsSources_whenNetworkServiceResponseSuccess_shouldReturnSuccess() {
         runTest {
-            val source = Source(id = "sourceId", name = "sourceName")
+            val apiSource = ApiSource(id = "sourceId", name = "sourceName")
 
-            val sources = mutableListOf<Source>()
-            sources.add(source)
+            val apiSources = mutableListOf<ApiSource>()
+            apiSources.add(apiSource)
 
             val newsSourceResponse = NewsSourceResponse(
-                status = "ok", sources = sources
+                status = "ok", apiSources = apiSources
             )
 
             doReturn(newsSourceResponse).`when`(networkService).getNewsSources()
 
             newsRepository.getNewsSources().test {
-                assertEquals(newsSourceResponse.sources, awaitItem())
+                assertEquals(newsSourceResponse.apiSources, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
 
@@ -168,26 +168,26 @@ class NewsRepositoryTest {
     @Test
     fun getNewsByCountry_whenNetworkServiceResponseSuccess_shouldReturnSuccess() {
         runTest {
-            val source = Source(id = "sourceId", name = "sourceName")
-            val article = Article(
+            val apiSource = ApiSource(id = "sourceId", name = "sourceName")
+            val apiArticle = ApiArticle(
                 title = "title",
                 description = "description",
                 url = "url",
                 imageUrl = "urlToImage",
-                source = source
+                apiSource = apiSource
             )
 
-            val articles = mutableListOf<Article>()
-            articles.add(article)
+            val apiArticles = mutableListOf<ApiArticle>()
+            apiArticles.add(apiArticle)
 
             val newsCountryResponse = NewsResponse(
-                status = "ok", totalResults = 1, articles = articles
+                status = "ok", totalResults = 1, apiArticles = apiArticles
             )
 
             doReturn(newsCountryResponse).`when`(networkService).getNewsCountry(COUNTRY)
 
             newsRepository.getNewsByCountry(COUNTRY).test {
-                assertEquals(newsCountryResponse.articles, awaitItem())
+                assertEquals(newsCountryResponse.apiArticles, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
 
@@ -214,26 +214,26 @@ class NewsRepositoryTest {
     @Test
     fun getNewsByLanguage_whenNetworkServiceResponseSuccess_shouldReturnSuccess() {
         runTest {
-            val source = Source(id = "sourceId", name = "sourceName")
-            val article = Article(
+            val apiSource = ApiSource(id = "sourceId", name = "sourceName")
+            val apiArticle = ApiArticle(
                 title = "title",
                 description = "description",
                 url = "url",
                 imageUrl = "urlToImage",
-                source = source
+                apiSource = apiSource
             )
 
-            val articles = mutableListOf<Article>()
-            articles.add(article)
+            val apiArticles = mutableListOf<ApiArticle>()
+            apiArticles.add(apiArticle)
 
             val newsLanguageResponse = NewsResponse(
-                status = "ok", totalResults = 1, articles = articles
+                status = "ok", totalResults = 1, apiArticles = apiArticles
             )
 
             doReturn(newsLanguageResponse).`when`(networkService).getNewsLanguage(LANGUAGE)
 
             newsRepository.getNewsByLanguage(LANGUAGE).test {
-                assertEquals(newsLanguageResponse.articles, awaitItem())
+                assertEquals(newsLanguageResponse.apiArticles, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
 
@@ -261,26 +261,26 @@ class NewsRepositoryTest {
     @Test
     fun getSearchResult_whenNetworkServiceResponseSuccess_shouldReturnSuccess() {
         runTest {
-            val source = Source(id = "sourceId", name = "sourceName")
-            val article = Article(
+            val apiSource = ApiSource(id = "sourceId", name = "sourceName")
+            val apiArticle = ApiArticle(
                 title = "title",
                 description = "description",
                 url = "url",
                 imageUrl = "urlToImage",
-                source = source
+                apiSource = apiSource
             )
 
-            val articles = mutableListOf<Article>()
-            articles.add(article)
+            val apiArticles = mutableListOf<ApiArticle>()
+            apiArticles.add(apiArticle)
 
             val searchResponse = NewsResponse(
-                status = "ok", totalResults = 1, articles = articles
+                status = "ok", totalResults = 1, apiArticles = apiArticles
             )
 
             doReturn(searchResponse).`when`(networkService).getSearchResult("query")
 
             newsRepository.getSearchResult("query").test {
-                assertEquals(searchResponse.articles, awaitItem())
+                assertEquals(searchResponse.apiArticles, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
 

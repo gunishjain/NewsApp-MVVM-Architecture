@@ -1,7 +1,7 @@
 package com.gunishjain.newsapp.ui.sources
 
 import androidx.lifecycle.viewModelScope
-import com.gunishjain.newsapp.data.model.Source
+import com.gunishjain.newsapp.data.model.ApiSource
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
@@ -20,8 +20,8 @@ class NewsSourceViewModel @Inject constructor(
 ) :
     BaseViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<Source>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<Source>>> = _uiState
+    private val _uiState = MutableStateFlow<UiState<List<ApiSource>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<ApiSource>>> = _uiState
 
     init {
         fetchSources()

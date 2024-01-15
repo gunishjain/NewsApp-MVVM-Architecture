@@ -1,7 +1,13 @@
 package com.gunishjain.newsapp.ui.base
 
+import ApiArticle
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -17,8 +23,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.gunishjain.newsapp.R
-import com.gunishjain.newsapp.data.model.Article
-import com.gunishjain.newsapp.data.model.Source
+import com.gunishjain.newsapp.data.model.ApiSource
 
 @Composable
 fun ShowProgressBar() {
@@ -56,7 +61,7 @@ fun ShowToast(text: String) {
 
 
 @Composable
-fun ArticleList(articles: List<Article>, onNewsClick: (url: String) -> Unit) {
+fun ArticleList(articles: List<ApiArticle>, onNewsClick: (url: String) -> Unit) {
     LazyColumn {
         items(articles.size) { index ->
             Article(article = articles[index], onNewsClick = onNewsClick)
@@ -65,7 +70,7 @@ fun ArticleList(articles: List<Article>, onNewsClick: (url: String) -> Unit) {
 }
 
 @Composable
-fun Article(article: Article, onNewsClick: (url: String) -> Unit) {
+fun Article(article: ApiArticle, onNewsClick: (url: String) -> Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .clickable {
@@ -76,16 +81,16 @@ fun Article(article: Article, onNewsClick: (url: String) -> Unit) {
         NewsImageBanner(article)
         NewsTitle(article.title)
         NewsDescription(article.description)
-        NewsSource(article.source)
+        NewsSource(article.apiSource)
     }
 
 }
 
 @Composable
-fun NewsImageBanner(article: Article) {
+fun NewsImageBanner(article: ApiArticle?) {
     AsyncImage(
-        model = article.imageUrl,
-        contentDescription = article.title,
+        model = article?.imageUrl,
+        contentDescription = article?.title,
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .height(200.dp)
@@ -120,7 +125,7 @@ fun NewsDescription(description: String?) {
 }
 
 @Composable
-fun NewsSource(source: Source?) {
+fun NewsSource(source: ApiSource?) {
     if (source != null) {
         Text(
             text = source.name,

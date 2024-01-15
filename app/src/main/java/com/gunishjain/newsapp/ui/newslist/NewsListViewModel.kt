@@ -1,7 +1,7 @@
 package com.gunishjain.newsapp.ui.newslist
 
+import ApiArticle
 import androidx.lifecycle.viewModelScope
-import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel
 import com.gunishjain.newsapp.ui.base.UiState
@@ -21,8 +21,8 @@ class NewsListViewModel @Inject constructor(
 ) :
     BaseViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<Article>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<Article>>> = _uiState
+    private val _uiState = MutableStateFlow<UiState<List<ApiArticle>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<List<ApiArticle>>> = _uiState
 
     fun fetchNewsBySrc(sourceId: String) {
         viewModelScope.launch(dispatcherProvider.main) {
@@ -53,7 +53,7 @@ class NewsListViewModel @Inject constructor(
 
                 newsRepository.getNewsByCountry(countryIdOne)
                     .zip(newsRepository.getNewsByCountry(countryIdTwo)) { articlesOne, articlesTwo ->
-                        val allArticlesFromApi = mutableListOf<Article>()
+                        val allArticlesFromApi = mutableListOf<ApiArticle>()
                         allArticlesFromApi.addAll(articlesOne)
                         allArticlesFromApi.addAll(articlesTwo)
 
@@ -84,7 +84,7 @@ class NewsListViewModel @Inject constructor(
                 newsRepository.getNewsByLanguage(languageIdOne)
                     .zip(newsRepository.getNewsByLanguage(languageIdTwo)) { articlesOne, articlesTwo ->
 
-                        val allArticlesFromApi = mutableListOf<Article>()
+                        val allArticlesFromApi = mutableListOf<ApiArticle>()
                         allArticlesFromApi.addAll(articlesOne)
                         allArticlesFromApi.addAll(articlesTwo)
 

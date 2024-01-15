@@ -1,7 +1,7 @@
 package com.gunishjain.newsapp.ui.newslist
 
 import app.cash.turbine.test
-import com.gunishjain.newsapp.data.model.Article
+import com.gunishjain.newsapp.data.model.ApiArticle
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
@@ -36,13 +36,13 @@ class NewsListViewModelTest {
     @Test
     fun fetchNewsBySrc_whenRepositoryResponseSuccess_shouldSetSuccessUiState() {
         runTest {
-            doReturn(flowOf(emptyList<Article>()))
+            doReturn(flowOf(emptyList<ApiArticle>()))
                 .`when`(newsRepository)
                 .getNewsEverything("en")
             val viewModel = NewsListViewModel(newsRepository, dispatcherProvider)
             viewModel.fetchNewsBySrc("en")
             viewModel.uiState.test {
-                assertEquals(UiState.Success(emptyList<List<Article>>()), awaitItem())
+                assertEquals(UiState.Success(emptyList<List<ApiArticle>>()), awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
             verify(newsRepository, times(1)).getNewsEverything("en")
@@ -53,7 +53,7 @@ class NewsListViewModelTest {
     fun fetchNewsBySrc_whenRepositoryResponseError_shouldSetErrorUiState() {
         runTest {
             val errorMessage = "Error Message For You"
-            doReturn(flow<List<Article>> {
+            doReturn(flow<List<ApiArticle>> {
                 throw IllegalStateException(errorMessage)
             })
                 .`when`(newsRepository)
@@ -75,13 +75,13 @@ class NewsListViewModelTest {
     @Test
     fun fetchNewsByLang_whenRepositoryResponseSuccess_shouldSetSuccessUiState() {
         runTest {
-            doReturn(flowOf(emptyList<Article>()))
+            doReturn(flowOf(emptyList<ApiArticle>()))
                 .`when`(newsRepository)
                 .getNewsByLanguage("en")
             val viewModel = NewsListViewModel(newsRepository, dispatcherProvider)
             viewModel.fetchNewsByLanguage(listOf("en"))
             viewModel.uiState.test {
-                assertEquals(UiState.Success(emptyList<List<Article>>()), awaitItem())
+                assertEquals(UiState.Success(emptyList<List<ApiArticle>>()), awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
             verify(newsRepository, times(1)).getNewsByLanguage("en")
@@ -92,7 +92,7 @@ class NewsListViewModelTest {
     fun fetchNewsByLang_whenRepositoryResponseError_shouldSetErrorUiState() {
         runTest {
             val errorMessage = "Error Message For You"
-            doReturn(flow<List<Article>> {
+            doReturn(flow<List<ApiArticle>> {
                 throw IllegalStateException(errorMessage)
             })
                 .`when`(newsRepository)
@@ -114,13 +114,13 @@ class NewsListViewModelTest {
     @Test
     fun fetchNewsByCountry_whenRepositoryResponseSuccess_shouldSetSuccessUiState() {
         runTest {
-            doReturn(flowOf(emptyList<Article>()))
+            doReturn(flowOf(emptyList<ApiArticle>()))
                 .`when`(newsRepository)
                 .getNewsByCountry(COUNTRY)
             val viewModel = NewsListViewModel(newsRepository, dispatcherProvider)
             viewModel.fetchNewsByCountry(listOf(COUNTRY))
             viewModel.uiState.test {
-                assertEquals(UiState.Success(emptyList<List<Article>>()), awaitItem())
+                assertEquals(UiState.Success(emptyList<List<ApiArticle>>()), awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
             verify(newsRepository, times(1)).getNewsByCountry(COUNTRY)
@@ -131,7 +131,7 @@ class NewsListViewModelTest {
     fun fetchNewsByCountry_whenRepositoryResponseError_shouldSetErrorUiState() {
         runTest {
             val errorMessage = "Error Message For You"
-            doReturn(flow<List<Article>> {
+            doReturn(flow<List<ApiArticle>> {
                 throw IllegalStateException(errorMessage)
             })
                 .`when`(newsRepository)

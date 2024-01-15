@@ -1,7 +1,7 @@
 package com.gunishjain.newsapp.ui.search
 
 import app.cash.turbine.test
-import com.gunishjain.newsapp.data.model.Article
+import com.gunishjain.newsapp.data.model.ApiArticle
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.DispatcherProvider
@@ -37,12 +37,12 @@ class SearchNewsViewModelTest {
     fun fetchSearchResult_whenRepositoryResponseSuccess_shouldSetSuccessUiState() {
         runTest {
 
-            doReturn(flowOf(emptyList<Article>()))
+            doReturn(flowOf(emptyList<ApiArticle>()))
                 .`when`(newsRepository)
                 .getSearchResult("query")
             val viewModel = SearchNewsViewModel(newsRepository, dispatcherProvider)
             viewModel.uiState.test {
-                assertEquals(UiState.Success(emptyList<List<Article>>()), awaitItem())
+                assertEquals(UiState.Success(emptyList<List<ApiArticle>>()), awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
             verify(newsRepository, times(1)).getSearchResult("query")
@@ -53,7 +53,7 @@ class SearchNewsViewModelTest {
     fun fetchSearchResult_whenRepositoryResponseError_shouldSetErrorUiState() {
         runTest {
             val errorMessage = "Error Message For You"
-            doReturn(flow<List<Article>> {
+            doReturn(flow<List<ApiArticle>> {
                 throw IllegalStateException(errorMessage)
             })
                 .`when`(newsRepository)

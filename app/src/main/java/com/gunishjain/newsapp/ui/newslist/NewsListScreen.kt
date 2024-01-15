@@ -1,5 +1,6 @@
 package com.gunishjain.newsapp.ui.newslist
 
+import ApiArticle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -8,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.ui.base.ArticleList
 import com.gunishjain.newsapp.ui.base.ShowProgressBar
 import com.gunishjain.newsapp.ui.base.ShowToast
@@ -45,7 +45,7 @@ fun NewsListRoute(
 }
 
 @Composable
-fun NewsListScreen(uiState: UiState<List<Article>>, onNewsClick: (url: String) -> Unit) {
+fun NewsListScreen(uiState: UiState<List<ApiArticle>>, onNewsClick: (url: String) -> Unit) {
 
     when (uiState) {
         is UiState.Success -> {
