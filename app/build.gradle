@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace 'com.gunishjain.newsapp'
-    compileSdk 33
+    compileSdk 34
 
     buildFeatures {
         viewBinding = true
@@ -23,7 +23,7 @@ android {
     defaultConfig {
         applicationId "com.gunishjain.newsapp"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -84,6 +84,10 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.5.0'
     implementation 'androidx.room:room-ktx:2.5.0'
     kapt 'androidx.room:room-compiler:2.5.0'
+
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+    implementation 'androidx.hilt:hilt-work:1.0.0'
+    kapt 'androidx.hilt:hilt-compiler:1.0.0'
     
     testImplementation 'junit:junit:4.13.2'
     testImplementation "org.mockito:mockito-core:5.3.1"

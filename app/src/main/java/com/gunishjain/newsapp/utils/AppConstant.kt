@@ -8,4 +8,5 @@ object AppConstant {
     const val BASE_URL = "https://newsapi.org/v2/"
     const val DEBOUNCE_TIMEOUT = 300L
     const val MIN_SEARCH_CHAR = 3
+    const val WORK_NAME="newsWork"
 }
