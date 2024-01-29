@@ -9,4 +9,7 @@ object AppConstant {
     const val MIN_SEARCH_CHAR = 3
     const val INITIAL_PAGE = 1
     const val PAGE_SIZE = 10
+    const val ARTICLE_TABLE="article_table"
+    const val ARTICLE_REMOTE_KEYS_TABLE="article_remote_keys_table"
+    const val ARTICLE_DATABASE="article_database"
 }

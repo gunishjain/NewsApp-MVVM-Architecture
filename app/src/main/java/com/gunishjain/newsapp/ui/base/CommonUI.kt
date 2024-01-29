@@ -1,6 +1,5 @@
 package com.gunishjain.newsapp.ui.base
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -66,7 +65,7 @@ fun Article(article: Article, onNewsClick: (url: String) -> Unit) {
 @Composable
 fun NewsImageBanner(article: Article) {
     AsyncImage(
-        model = article.imageUrl,
+        model = article.urlToImage,
         contentDescription = article.title,
         contentScale = ContentScale.Crop,
         modifier = Modifier

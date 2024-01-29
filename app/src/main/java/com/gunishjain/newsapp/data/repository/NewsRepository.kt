@@ -1,9 +1,11 @@
 package com.gunishjain.newsapp.data.repository
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.gunishjain.newsapp.data.api.NetworkService
+import com.gunishjain.newsapp.data.local.ArticleDatabase
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.data.model.Source
 import com.gunishjain.newsapp.utils.AppConstant.PAGE_SIZE
@@ -11,17 +13,24 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import javax.inject.Singleton
 
-class NewsRepository @Inject constructor(private val networkService: NetworkService) {
+class NewsRepository @Inject constructor(
+    private val networkService: NetworkService,
+    private val articleDatabase: ArticleDatabase
+) {
 
+    @OptIn(ExperimentalPagingApi::class)
     fun getTopHeadlines(): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE
             ),
+            remoteMediator = ArticleRemoteMediator(
+                networkService,
+                articleDatabase
+            ),
             pagingSourceFactory = {
-                TopHeadlinePagingSource(networkService)
+                articleDatabase.articleDao().getAllArticles()
             }
         ).flow
     }
@@ -56,7 +65,10 @@ class NewsRepository @Inject constructor(private val networkService: NetworkServ
         ).flow
     }
 
-    fun getNewsByLanguage(languageIdOne: String, languageIdTwo: String?): Flow<PagingData<Article>> {
+    fun getNewsByLanguage(
+        languageIdOne: String,
+        languageIdTwo: String?
+    ): Flow<PagingData<Article>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE
