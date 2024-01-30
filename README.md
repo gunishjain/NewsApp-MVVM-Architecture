@@ -21,7 +21,7 @@ A News Application that allows users to fetch news built by following MVVM Archi
 - UI Test
 
 > [!NOTE]
-> Compose UI is implemented in the compose-migration branch, the tests are implemented in the compose-without-pagination branch.
+> Pagination is implemented in [compose-pagination](https://github.com/gunishjain/NewsApp-MVVM-Architecture/tree/compose-pagination) branch.
 
 <img src="https://github.com/gunishjain/NewsApp-MVVM-Architecture/blob/main/assets/MVVM-Arch.png">
 
@@ -104,6 +104,22 @@ androidTestImplementation 'androidx.navigation:navigation-testing:2.6.0'
 debugImplementation 'androidx.compose.ui:ui-tooling'
 debugImplementation 'androidx.compose.ui:ui-test-manifest'
 ```
+
+## How to Run the Project
+
+- Clone the Repository:
+```
+https://github.com/gunishjain/NewsApp-MVVM-Architecture.git
+cd NewsApp-MVVM-Architecture
+```
+- Visit newsapi.org and sign up for an API key, Copy the API key provided
+- Open the build.gradle.kts file in the app module. Find the following line
+```
+buildConfigField("String", "API_KEY", "\"<YOUR_API_KEY>\"")
+```
+- Replace "Add your API Key" with the API key you obtained
+- Build and run the Project
+
 ## Complete Project Structure
 
 ```
