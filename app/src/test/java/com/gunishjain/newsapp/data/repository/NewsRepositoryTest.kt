@@ -2,6 +2,7 @@ package com.gunishjain.newsapp.data.repository
 
 import app.cash.turbine.test
 import com.gunishjain.newsapp.data.api.NetworkService
+import com.gunishjain.newsapp.data.local.DatabaseService
 import com.gunishjain.newsapp.data.model.ApiArticle
 import com.gunishjain.newsapp.data.model.NewsResponse
 import com.gunishjain.newsapp.data.model.NewsSourceResponse
@@ -25,11 +26,15 @@ class NewsRepositoryTest {
     @Mock
     private lateinit var networkService: NetworkService
 
+    @Mock
+    private lateinit var databaseService: DatabaseService
+
+
     private lateinit var newsRepository: NewsRepository
 
     @Before
     fun setUp() {
-        newsRepository = NewsRepository(networkService)
+        newsRepository = NewsRepository(networkService,databaseService)
     }
 
     @Test

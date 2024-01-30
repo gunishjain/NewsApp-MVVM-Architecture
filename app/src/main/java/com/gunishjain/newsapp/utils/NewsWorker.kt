@@ -9,7 +9,7 @@ import com.gunishjain.newsapp.data.local.DatabaseService
 import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import toArticleEntity
+import com.gunishjain.newsapp.data.model.toArticleEntity
 
 
 @HiltWorker

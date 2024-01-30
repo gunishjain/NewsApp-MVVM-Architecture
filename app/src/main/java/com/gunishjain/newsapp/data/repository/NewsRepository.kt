@@ -1,16 +1,15 @@
 package com.gunishjain.newsapp.data.repository
 
-import ApiArticle
+import com.gunishjain.newsapp.data.model.ApiArticle
 import com.gunishjain.newsapp.data.api.NetworkService
 import com.gunishjain.newsapp.data.local.DatabaseService
-import com.gunishjain.newsapp.data.local.NewsDatabaseService
 import com.gunishjain.newsapp.data.local.entity.Article
 import com.gunishjain.newsapp.data.model.ApiSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import toArticleEntity
+import com.gunishjain.newsapp.data.model.toArticleEntity
 import javax.inject.Inject
 
 class NewsRepository @Inject constructor(

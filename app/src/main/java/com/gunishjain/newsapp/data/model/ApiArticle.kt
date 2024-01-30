@@ -1,7 +1,7 @@
+package com.gunishjain.newsapp.data.model
+
 import com.google.gson.annotations.SerializedName
 import com.gunishjain.newsapp.data.local.entity.Article
-import com.gunishjain.newsapp.data.model.ApiSource
-import com.gunishjain.newsapp.data.model.toSourceEntity
 
 data class ApiArticle(
     val title: String = "",

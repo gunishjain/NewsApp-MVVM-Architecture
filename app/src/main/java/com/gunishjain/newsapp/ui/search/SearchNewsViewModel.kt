@@ -1,6 +1,6 @@
 package com.gunishjain.newsapp.ui.search
 
-import ApiArticle
+import com.gunishjain.newsapp.data.model.ApiArticle
 import androidx.lifecycle.viewModelScope
 import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.BaseViewModel

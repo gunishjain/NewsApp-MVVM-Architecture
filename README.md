@@ -6,6 +6,7 @@ A News Application that allows users to fetch news built by following MVVM Archi
 ## Major Highlights
 
 - MVVM Architecture
+- Offline First
 - Kotlin
 - Dagger Hilt
 - Retrofit
@@ -14,7 +15,8 @@ A News Application that allows users to fetch news built by following MVVM Archi
 - Stateflow
 - Viewbinding
 - Pagination
-- Compose UI 
+- Work Manager
+- Compose UI
 - Unit Test
 - UI Test
 
@@ -37,6 +39,8 @@ A News Application that allows users to fetch news built by following MVVM Archi
   * Filter
   * DistinctUntilChanged
   * FlatMapLatest
+- Offline Support using Room DB 
+- WorkManager for Periodic News Fetching
 - Unit Test
   - Mockito
   - Espresso

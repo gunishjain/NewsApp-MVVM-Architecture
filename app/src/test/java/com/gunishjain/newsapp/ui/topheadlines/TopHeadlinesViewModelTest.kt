@@ -6,6 +6,7 @@ import com.gunishjain.newsapp.data.repository.NewsRepository
 import com.gunishjain.newsapp.ui.base.UiState
 import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
 import com.gunishjain.newsapp.utils.DispatcherProvider
+import com.gunishjain.newsapp.utils.NetworkHelper
 import com.gunishjain.newsapp.utils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -28,6 +29,9 @@ class TopHeadlinesViewModelTest {
 
     private lateinit var dispatcherProvider: DispatcherProvider
 
+    @Mock
+    private lateinit var networkHelper: NetworkHelper
+
     @Before
     fun setUp() {
         dispatcherProvider = TestDispatcherProvider()
@@ -39,7 +43,7 @@ class TopHeadlinesViewModelTest {
             doReturn(flowOf(emptyList<ApiArticle>()))
                 .`when`(newsRepository)
                 .getTopHeadlines(COUNTRY)
-            val viewModel = TopHeadlinesViewModel(newsRepository, dispatcherProvider)
+            val viewModel = TopHeadlinesViewModel(newsRepository, dispatcherProvider,networkHelper)
             viewModel.uiState.test {
                 assertEquals(UiState.Success(emptyList<List<ApiArticle>>()), awaitItem())
                 cancelAndIgnoreRemainingEvents()
@@ -58,7 +62,7 @@ class TopHeadlinesViewModelTest {
                 .`when`(newsRepository)
                 .getTopHeadlines(COUNTRY)
 
-            val viewModel = TopHeadlinesViewModel(newsRepository, dispatcherProvider)
+            val viewModel = TopHeadlinesViewModel(newsRepository, dispatcherProvider,networkHelper)
             viewModel.uiState.test {
                 assertEquals(
                     UiState.Error(IllegalStateException(errorMessage).toString()),

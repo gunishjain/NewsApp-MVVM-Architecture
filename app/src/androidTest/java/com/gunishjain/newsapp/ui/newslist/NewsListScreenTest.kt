@@ -1,6 +1,6 @@
 package com.gunishjain.newsapp.ui.newslist
 
-import ApiArticle
+import com.gunishjain.newsapp.data.model.ApiArticle
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.hasScrollToNodeAction

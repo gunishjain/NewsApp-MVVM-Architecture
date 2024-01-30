@@ -1,6 +1,6 @@
 package com.gunishjain.newsapp.data.local.entity
 
-import ApiArticle
+import com.gunishjain.newsapp.data.model.ApiArticle
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity

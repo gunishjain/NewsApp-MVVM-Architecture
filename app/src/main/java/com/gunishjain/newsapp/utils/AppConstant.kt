@@ -1,8 +1,10 @@
 package com.gunishjain.newsapp.utils
 
+import com.gunishjain.newsapp.BuildConfig
+
 object AppConstant {
     const val APP_NAME = "NewsApp"
-    const val API_KEY = "2f8b8962d0384575af31c5ffe7f2c903"
+    const val API_KEY = BuildConfig.API_KEY
     const val COUNTRY = "in"
     const val LANGUAGE = "en"
     const val BASE_URL = "https://newsapi.org/v2/"

@@ -1,6 +1,5 @@
 package com.gunishjain.newsapp.data.model
 
-import ApiArticle
 import com.google.gson.annotations.SerializedName
 
 data class NewsResponse(

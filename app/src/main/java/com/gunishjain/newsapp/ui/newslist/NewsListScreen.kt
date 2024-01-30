@@ -1,6 +1,6 @@
 package com.gunishjain.newsapp.ui.newslist
 
-import ApiArticle
+import com.gunishjain.newsapp.data.model.ApiArticle
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
