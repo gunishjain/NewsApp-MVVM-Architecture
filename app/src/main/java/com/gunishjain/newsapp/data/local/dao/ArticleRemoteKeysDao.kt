@@ -11,7 +11,7 @@ import com.gunishjain.newsapp.data.local.entity.ArticleRemoteKeys
 interface ArticleRemoteKeysDao {
 
     @Query("SELECT * FROM ArticleRemoteKeys WHERE id=:id")
-    suspend fun getRemoteKeys(id: Int): ArticleRemoteKeys
+    suspend fun getRemoteKeys(id: String): ArticleRemoteKeys
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAllRemoteKeys(remoteKeys: List<ArticleRemoteKeys>)

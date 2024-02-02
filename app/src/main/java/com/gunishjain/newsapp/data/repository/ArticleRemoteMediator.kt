@@ -1,5 +1,6 @@
 package com.gunishjain.newsapp.data.repository
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -10,8 +11,8 @@ import com.gunishjain.newsapp.data.local.ArticleDatabase
 import com.gunishjain.newsapp.data.local.entity.ArticleRemoteKeys
 import com.gunishjain.newsapp.data.model.Article
 import com.gunishjain.newsapp.utils.AppConstant.COUNTRY
-import com.gunishjain.newsapp.utils.AppConstant.INITIAL_PAGE
 import com.gunishjain.newsapp.utils.AppConstant.PAGE_SIZE
+import com.gunishjain.newsapp.utils.generateUniqueHash
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -30,11 +31,13 @@ class ArticleRemoteMediator @Inject constructor(
         return try {
             val currentPage = when (loadType) {
                 LoadType.REFRESH -> {
+                    Log.d("GUNISH", "REFRESH")
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
                     remoteKeys?.nextPage?.minus(1) ?: 1
                 }
 
                 LoadType.PREPEND -> {
+
                     val remoteKeys = getRemoteKeyForFirstItem(state)
                     val prevPage = remoteKeys?.prevPage
                         ?: return MediatorResult.Success(
@@ -44,33 +47,44 @@ class ArticleRemoteMediator @Inject constructor(
                 }
 
                 LoadType.APPEND -> {
+                    Log.d("GUNISH", "APPEND")
                     val remoteKeys = getRemoteKeyForLastItem(state)
                     val nextPage = remoteKeys?.nextPage
-                        ?: return MediatorResult.Success(
-                            endOfPaginationReached = remoteKeys != null
-                        )
+                        ?: return MediatorResult.Success(endOfPaginationReached = remoteKeys != null)
                     nextPage
                 }
             }
 
-            val response =
-                networkService.getTopHeadlines(COUNTRY, page = currentPage, pageSize = PAGE_SIZE)
-            val endOfPaginationReached = (response.totalResults / PAGE_SIZE) == currentPage
+            val response = networkService.getTopHeadlines(
+                country = COUNTRY,
+                page = currentPage,
+                pageSize = PAGE_SIZE
+            )
+            val endOfPaginationReached = (currentPage * PAGE_SIZE) >= response.totalResults
 
-            val prevPage = if (currentPage == INITIAL_PAGE) null else currentPage - 1
+            val prevPage = if (currentPage == 1) null else currentPage - 1
             val nextPage = if (endOfPaginationReached) null else currentPage + 1
 
             articleDatabase.withTransaction {
-
                 if (loadType == LoadType.REFRESH) {
                     articleDao.deleteAll()
                     articleRemoteKeysDao.deleteAllRemoteKeys()
                 }
+                val articlesWithUniqueID = response.articles.map { article ->
+                    val id = generateUniqueHash(article)
 
-                articleDao.insertArticles(response.articles)
-                //TODO: Issue indexing wrong for remote table
+                    Article(
+                        id = id,
+                        title = article.title,
+                        description = article.description,
+                        url = article.url,
+                        urlToImage = article.urlToImage,
+                        source = article.source
+                    )
 
-                val keys = response.articles.map { article ->
+                }
+
+                val keys = articlesWithUniqueID.map { article ->
                     ArticleRemoteKeys(
                         id = article.id,
                         prevPage = prevPage,
@@ -78,11 +92,12 @@ class ArticleRemoteMediator @Inject constructor(
                     )
                 }
 
-                articleRemoteKeysDao.addAllRemoteKeys(keys)
+                articleRemoteKeysDao.addAllRemoteKeys(remoteKeys = keys)
+                articleDao.insertArticles(articlesWithUniqueID)
             }
-            MediatorResult.Success(endOfPaginationReached)
+            MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (e: Exception) {
-            MediatorResult.Error(e)
+            return MediatorResult.Error(e)
         }
     }
 
@@ -113,4 +128,5 @@ class ArticleRemoteMediator @Inject constructor(
                 articleRemoteKeysDao.getRemoteKeys(id = article.id)
             }
     }
+
 }

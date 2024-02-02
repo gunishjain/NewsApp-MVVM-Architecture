@@ -39,20 +39,20 @@ fun TopHeadLineScreen(uiState: LazyPagingItems<Article>, onNewsClick: (url: Stri
 
     uiState.apply {
         when {
-            loadState.refresh is LoadState.Loading -> {
+            loadState.mediator?.refresh is LoadState.Loading -> {
                 ShowProgressBar()
             }
 
-            loadState.refresh is LoadState.Error -> {
+            loadState.mediator?.refresh is LoadState.Error -> {
                 val error = uiState.loadState.refresh as LoadState.Error
                 ShowToast(error.error.localizedMessage!!)
             }
 
-            loadState.append is LoadState.Loading -> {
+            loadState.mediator?.append is LoadState.Loading -> {
                 ShowProgressBar()
             }
 
-            loadState.append is LoadState.Error -> {
+            loadState.mediator?.append is LoadState.Error -> {
                 val error = uiState.loadState.append as LoadState.Error
                 ShowToast(error.error.localizedMessage!!)
             }

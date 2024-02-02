@@ -5,15 +5,14 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.gunishjain.newsapp.utils.AppConstant.ARTICLE_TABLE
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Entity(tableName = ARTICLE_TABLE)
 @Serializable
 data class Article(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "article_id")
-    val id: Int,
+    val id: String,
     val title: String = "",
     val description: String? = null,
     val url: String = "",
